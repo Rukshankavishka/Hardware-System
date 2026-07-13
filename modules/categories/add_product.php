@@ -63,9 +63,16 @@ if(isset($_POST['save'])){
 
 
     echo "<script>
-            alert('Product Added Successfully');
-            window.location='index.php';
-          </script>";
+
+        alert('Product Added Successfully');
+
+        window.parent.closeModal();
+
+        window.parent.location.reload();
+
+    </script>";
+
+    exit;
 
 }
 

@@ -1,7 +1,6 @@
 /* ================================
    CATEGORIES PAGE
 ================================ */
-
 .categories-page{
     width:100%;
     padding:25px;
@@ -9,9 +8,7 @@
     min-height:100vh;
 }
 
-/* ================================
-   PAGE HEADER
-================================ */
+/* PAGE HEADER */
 
 .page-header{
     display:flex;
@@ -26,15 +23,7 @@
     font-weight:700;
 }
 
-.page-header p{
-    margin-top:6px;
-    color:#64748b;
-    font-size:14px;
-}
-
-/* ================================
-   CATEGORY BUTTONS
-================================ */
+/* CATEGORY BUTTONS */
 
 .category-buttons{
     display:flex;
@@ -44,54 +33,32 @@
 }
 
 .category-btn{
-
     background:#b2e862;
-
     border:2px solid #dbe3ef;
-
     padding:12px 22px;
-
     border-radius:12px;
-
     cursor:pointer;
-
     font-size:15px;
-
     font-weight:600;
-
     color:#334155;
-
     transition:.3s;
 }
 
 .category-btn:hover{
-
     background:#2563eb;
-
-    color:white;
-
+    color:#fff;
     border-color:#2563eb;
-
     transform:translateY(-3px);
-
     box-shadow:0 8px 20px rgba(37,99,235,.20);
-
 }
-
-/* Active Category */
 
 .category-btn.active{
-
     background:#2563eb;
-
     color:#fff;
-
     border-color:#2563eb;
-
 }
-/* ==========================================
-   CATEGORY TOOLBAR
-========================================== */
+
+/* TOOLBAR */
 
 .category-toolbar{
     display:flex;
@@ -101,9 +68,7 @@
     margin:25px 0;
 }
 
-/* ==========================================
-   SEARCH BOX
-========================================== */
+/* SEARCH */
 
 .search-box{
     flex:1;
@@ -111,119 +76,41 @@
 }
 
 .search-box input{
-
     width:100%;
-
     height:48px;
-
     padding:0 18px;
-
     border:2px solid #dbe3ef;
-
     border-radius:12px;
-
     outline:none;
-
     background:#fff;
-
     font-size:15px;
-
-    color:#334155;
-
-    transition:0.3s;
 }
 
 .search-box input:focus{
-
     border-color:#2563eb;
-
     box-shadow:0 0 0 4px rgba(37,99,235,.15);
-
 }
 
-.search-box input::placeholder{
-
-    color:#94a3b8;
-
-}
-
-/* ==========================================
-   ADD PRODUCT BUTTON
-========================================== */
+/* ADD BUTTON */
 
 .add-product-btn{
-
     background:#2563eb;
-
     color:#fff;
-
     border:none;
-
     height:48px;
-
     padding:0 24px;
-
     border-radius:12px;
-
     font-size:15px;
-
     font-weight:600;
-
     cursor:pointer;
-
-    transition:0.3s;
-
-    box-shadow:0 6px 16px rgba(37,99,235,.20);
-
+    transition:.3s;
 }
 
 .add-product-btn:hover{
-
     background:#1d4ed8;
-
-    transform:translateY(-2px);
-
-    box-shadow:0 10px 22px rgba(37,99,235,.30);
-
 }
 
-.add-product-btn:active{
-
-    transform:scale(.98);
-
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media(max-width:768px){
-
-.category-toolbar{
-
-    flex-direction:column;
-
-    align-items:stretch;
-
-}
-
-.search-box{
-
-    max-width:100%;
-
-}
-
-.add-product-btn{
-
-    width:100%;
-
-}
-
-}
-
-/* ==========================================
-   SUMMARY CARDS
-========================================== */
+/* SUMMARY */
 
 .summary-cards{
     display:grid;
@@ -233,17 +120,11 @@
 }
 
 .summary-card{
-    background:#ffffff;
+    background:#fff;
     border-radius:15px;
     padding:20px;
     box-shadow:0 8px 20px rgba(0,0,0,.05);
     border:1px solid #e2e8f0;
-    transition:.3s;
-}
-
-.summary-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 12px 25px rgba(0,0,0,.08);
 }
 
 .summary-card h3{
@@ -257,167 +138,42 @@
     color:#64748b;
 }
 
-/* ==========================================
-   TABLE
-========================================== */
+/* TABLE */
 
 .table-container{
-
     width:100%;
-
     overflow-x:auto;
-
-    background:#ffffff;
-
+    background:#fff;
     border-radius:15px;
-
     box-shadow:0 8px 20px rgba(0,0,0,.05);
-
     border:1px solid #e2e8f0;
-
 }
 
 table{
-
     width:100%;
-
     border-collapse:collapse;
-
 }
 
 thead{
-
     background:#2563eb;
-
 }
 
 thead th{
-
-    color:#ffffff;
-
+    color:#fff;
     padding:16px;
-
-    font-size:14px;
-
     text-align:left;
-
-    font-weight:600;
-
-    white-space:nowrap;
-
 }
 
 tbody td{
-
     padding:16px;
-
     border-bottom:1px solid #eef2f7;
-
-    font-size:14px;
-
-    color:#334155;
-
-}
-
-tbody tr{
-
-    transition:.3s;
-
 }
 
 tbody tr:hover{
-
     background:#f8fbff;
-
 }
 
-tbody tr:nth-child(even){
-
-    background:#fafafa;
-
-}
-
-tbody tr:nth-child(even):hover{
-
-    background:#f1f7ff;
-
-}
-
-/* ==========================================
-   STATUS BADGES
-========================================== */
-
-.status{
-
-    display:inline-block;
-
-    padding:6px 14px;
-
-    border-radius:20px;
-
-    font-size:12px;
-
-    font-weight:600;
-
-}
-
-.in-stock{
-
-    background:#dcfce7;
-
-    color:#15803d;
-
-}
-
-.low-stock{
-
-    background:#fef3c7;
-
-    color:#b45309;
-
-}
-
-.out-stock{
-
-    background:#fee2e2;
-
-    color:#b91c1c;
-
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media(max-width:992px){
-
-.summary-cards{
-
-    grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:600px){
-
-.summary-cards{
-
-    grid-template-columns:1fr;
-
-}
-
-thead th,
-tbody td{
-
-    padding:12px;
-
-    font-size:13px;
-
-}
-
-}
-
+/* ADD PRODUCT FORM */
 
 .product-form{
     width:100%;
@@ -465,7 +221,8 @@ tbody td{
     cursor:pointer;
 }
 
-/* Popup Background */
+/* MODAL */
+
 .modal{
     display:none;
     position:fixed;
@@ -473,15 +230,12 @@ tbody td{
     left:0;
     width:100vw;
     height:100vh;
-    background:rgba(0,0,0,0.5);
-
+    background:rgba(0,0,0,.5);
     justify-content:center;
     align-items:center;
-
     z-index:9999;
 }
 
-/* Popup Box */
 .modal-box{
     width:900px;
     max-width:95%;
@@ -490,25 +244,63 @@ tbody td{
     border-radius:12px;
     overflow:hidden;
     position:relative;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
-/* iframe */
 .modal-box iframe{
     width:100%;
     height:100%;
     border:none;
 }
 
-/* Close Button */
 .close{
     position:absolute;
     top:10px;
     right:15px;
     font-size:28px;
-    font-weight:bold;
     cursor:pointer;
     z-index:10000;
-    color:#333;
 }
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+    .summary-cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:768px){
+    .category-toolbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .search-box{
+        max-width:100%;
+    }
+
+    .add-product-btn{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    .summary-cards{
+        grid-template-columns:1fr;
+    }
+
+    thead th,
+    tbody td{
+        padding:12px;
+        font-size:13px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full-width{
+        grid-column:1;
+    }
+}
+

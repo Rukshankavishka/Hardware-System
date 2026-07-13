@@ -49,8 +49,12 @@ $pdo = $database->connect();
 
         ?>
 
-        <button class="category-btn">
-            <?php echo $row['category_name']; ?>
+        <button 
+            class="category-btn"
+            onclick="filterCategory(<?= $row['category_id']; ?>)">
+
+            <?= $row['category_name']; ?>
+
         </button>
 
         <?php
@@ -136,6 +140,9 @@ $pdo = $database->connect();
 
                 <th>Status</th>
 
+                <th>Action</th>
+
+
             </tr>
 
             </thead>
@@ -145,25 +152,64 @@ $pdo = $database->connect();
                 <tbody>
                     <?php
 
-                    $query = "
-                    SELECT 
-                        p.product_code,
-                        p.product_name,
-                        p.buying_price,
-                        p.selling_price,
-                        p.stock_qty,
-                        p.unit,
-                        p.status,
-                        c.category_name
+                    if(isset($_GET['category_id'])){
 
-                    FROM products p
+                        $category_id = $_GET['category_id'];
 
-                    JOIN categories c
-                    ON p.category_id = c.category_id
-                    ";
+                        $query = "
+                        SELECT 
+                            p.product_id,
+                            p.product_code,
+                            p.product_name,
+                            p.buying_price,
+                            p.selling_price,
+                            p.stock_qty,
+                            p.unit,
+                            p.status,
+                            c.category_name
 
-                    $stmt = $pdo->prepare($query);
-                    $stmt->execute();
+                        FROM products p
+
+                        JOIN categories c
+                        ON p.category_id = c.category_id
+
+                        WHERE p.category_id = :category_id
+                        ";
+
+                        $stmt = $pdo->prepare($query);
+
+                        $stmt->execute([
+                            ':category_id' => $category_id
+                        ]);
+
+
+                    }else{
+
+                        $query = "
+                        SELECT 
+                            p.product_id,
+                            p.product_code,
+                            p.product_name,
+                            p.buying_price,
+                            p.selling_price,
+                            p.stock_qty,
+                            p.unit,
+                            p.status,
+                            c.category_name
+
+                        FROM products p
+
+                        JOIN categories c
+                        ON p.category_id = c.category_id
+                        ";
+
+                        $stmt = $pdo->prepare($query);
+
+                        $stmt->execute();
+
+                    }
+
+                    
 
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
@@ -191,6 +237,23 @@ $pdo = $database->connect();
                             </span>
                         </td>
 
+                        <td>
+                            <button 
+                                type="button"
+                                class="edit-btn"
+                                onclick="openEditModal(<?= $row['product_id']; ?>)">
+                                ✏️ Edit
+                            </button>
+                        
+                            <button 
+                                type="button"
+                                class="delete-btn"
+                                onclick="openDeleteModal(<?= $row['product_id']; ?>)">
+                                🗑 Delete
+                            </button>
+
+                        </td>
+
                     </tr>
 
                     <?php
@@ -210,7 +273,8 @@ $pdo = $database->connect();
         <span class="close" onclick="closeModal()">&times;</span>
 
         <iframe
-            src="add_product.php"
+            id="productFrame"
+            src="about:blank"
             width="100%"
             height="650"
             frameborder="0">
@@ -219,26 +283,105 @@ $pdo = $database->connect();
     </div>
 
 </div>
+<div id="deleteModal" class="delete-modal">
+
+    <div class="delete-box">
+
+        <h3>Delete Product?</h3>
+
+        <p>Are you sure you want to delete this product?</p>
+
+
+        <button 
+        class="delete-confirm"
+        onclick="confirmDelete()">
+        Yes, Delete
+        </button>
+
+
+        <button 
+        class="cancel-delete"
+        onclick="closeDeleteModal()">
+        Cancel
+        </button>
+
+
+    </div>
+
+</div>
 
 <script>
 
-function openModal() {
+function openModal(){
+
+    document.getElementById("productFrame").src = "add_product.php";
+
     document.getElementById("productModal").style.display = "flex";
+
 }
 
-function closeModal() {
+function openEditModal(id){
+
+    document.getElementById("productFrame").src =
+    "edit_product.php?id=" + id;
+
+    document.getElementById("productModal").style.display = "flex";
+
+}
+
+function closeModal(){
+
     document.getElementById("productModal").style.display = "none";
+
+    document.getElementById("productFrame").src = "about:blank";
+
 }
 
-window.onclick = function(event) {
+window.onclick = function(event){
 
     let modal = document.getElementById("productModal");
 
-    if (event.target == modal) {
+    if(event.target == modal){
+
         closeModal();
+
     }
+
+}
+function filterCategory(id){
+
+    window.location =
+    "index.php?category_id=" + id;
+
 }
 
+let deleteId = 0;
+
+
+function openDeleteModal(id){
+
+    deleteId = id;
+
+    document.getElementById("deleteModal").style.display="flex";
+
+}
+
+
+
+function closeDeleteModal(){
+
+    document.getElementById("deleteModal").style.display="none";
+
+}
+
+
+
+function confirmDelete(){
+
+    window.location =
+    "delete_product.php?id=" + deleteId;
+
+}
 </script>
 
 </body>
