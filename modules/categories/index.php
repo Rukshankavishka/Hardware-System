@@ -11,6 +11,78 @@ require_once "../../config/database.php";
 $database = new Database();
 $pdo = $database->connect();
 
+$category_id = $_GET['category_id'] ?? null;
+
+
+// Base condition
+
+$where = "";
+
+$params = [];
+
+
+if($category_id){
+
+    $where = " WHERE category_id = :category_id ";
+
+    $params[':category_id'] = $category_id;
+
+}
+
+
+// Total Products
+
+$stmt = $pdo->prepare(
+    "SELECT COUNT(*) FROM products $where"
+);
+
+$stmt->execute($params);
+
+$totalProducts = $stmt->fetchColumn();
+
+
+
+// In Stock
+
+$stmt = $pdo->prepare(
+    "SELECT COUNT(*) FROM products 
+     $where 
+     " . ($where ? " AND " : " WHERE ") . " stock_qty > 0"
+);
+
+$stmt->execute($params);
+
+$inStock = $stmt->fetchColumn();
+
+
+
+// Low Stock
+
+$stmt = $pdo->prepare(
+    "SELECT COUNT(*) FROM products 
+     $where 
+     " . ($where ? " AND " : " WHERE ") . " stock_qty <= 10"
+);
+
+$stmt->execute($params);
+
+$lowStock = $stmt->fetchColumn();
+
+
+
+// Out Stock
+
+$stmt = $pdo->prepare(
+    "SELECT COUNT(*) FROM products 
+     $where 
+     " . ($where ? " AND " : " WHERE ") . " stock_qty = 0"
+);
+
+$stmt->execute($params);
+
+$outStock = $stmt->fetchColumn();
+
+
 ?>
 
 
@@ -73,6 +145,7 @@ $pdo = $database->connect();
 
             <input
                 type="text"
+                id="searchProduct"
                 placeholder="Search Product..."
             >
 
@@ -93,22 +166,22 @@ $pdo = $database->connect();
     <div class="summary-cards">
 
         <div class="summary-card">
-            <h3>125</h3>
+            <h3><?= $totalProducts; ?></h3>
             <span>Total Products</span>
         </div>
 
         <div class="summary-card">
-            <h3>110</h3>
+            <h3><?= $inStock; ?></h3>
             <span>In Stock</span>
         </div>
 
         <div class="summary-card">
-            <h3>12</h3>
+            <h3><?= $lowStock; ?></h3>
             <span>Low Stock</span>
         </div>
 
         <div class="summary-card">
-            <h3>3</h3>
+            <h3><?= $outStock; ?></h3>
             <span>Out of Stock</span>
         </div>
 
@@ -185,6 +258,13 @@ $pdo = $database->connect();
 
                     }else{
 
+                        $search = "";
+
+                        if(isset($_GET['search'])){
+                            $search = $_GET['search'];
+                        }
+
+
                         $query = "
                         SELECT 
                             p.product_id,
@@ -201,11 +281,20 @@ $pdo = $database->connect();
 
                         JOIN categories c
                         ON p.category_id = c.category_id
+
+                        WHERE 
+                        p.product_name LIKE :search
+                        OR
+                        p.product_code LIKE :search
                         ";
+
 
                         $stmt = $pdo->prepare($query);
 
-                        $stmt->execute();
+
+                        $stmt->execute([
+                            ':search' => "%$search%"
+                        ]);
 
                     }
 
@@ -245,7 +334,7 @@ $pdo = $database->connect();
                                 ✏️ Edit
                             </button>
                         
-                            <button 
+                            <button
                                 type="button"
                                 class="delete-btn"
                                 onclick="openDeleteModal(<?= $row['product_id']; ?>)">
@@ -283,33 +372,40 @@ $pdo = $database->connect();
     </div>
 
 </div>
-<div id="deleteModal" class="delete-modal">
 
-    <div class="delete-box">
+<div id="deleteModal" class="modal" style="display:none;">
 
-        <h3>Delete Product?</h3>
+    <div class="modal-box">
 
-        <p>Are you sure you want to delete this product?</p>
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
 
+        <h2>Delete Product</h2>
 
-        <button 
-        class="delete-confirm"
-        onclick="confirmDelete()">
-        Yes, Delete
-        </button>
+        <p style="margin:20px 0;">
+            Are you sure you want to delete this product?
+        </p>
 
+        <div style="display:flex;justify-content:center;gap:15px;">
 
-        <button 
-        class="cancel-delete"
-        onclick="closeDeleteModal()">
-        Cancel
-        </button>
+            <button
+                type="button"
+                class="delete-btn"
+                onclick="confirmDelete()">
+                🗑 Yes, Delete
+            </button>
 
+            <button
+                type="button"
+                class="edit-btn"
+                onclick="closeDeleteModal()">
+                Cancel
+            </button>
+
+        </div>
 
     </div>
 
 </div>
-
 <script>
 
 function openModal(){
@@ -337,6 +433,28 @@ function closeModal(){
 
 }
 
+let deleteId = null;
+
+function openDeleteModal(id){
+
+    deleteId = id;
+
+    document.getElementById("deleteModal").style.display = "flex";
+
+}
+
+function closeDeleteModal(){
+
+    document.getElementById("deleteModal").style.display = "none";
+
+}
+
+function confirmDelete(){
+
+    window.location = "delete_product.php?id=" + deleteId;
+
+}
+
 window.onclick = function(event){
 
     let modal = document.getElementById("productModal");
@@ -355,33 +473,32 @@ function filterCategory(id){
 
 }
 
-let deleteId = 0;
+document.getElementById("searchProduct").addEventListener("keyup", function(){
+
+    let value = this.value.toLowerCase();
+
+    let rows = document.querySelectorAll(".table-container tbody tr");
 
 
-function openDeleteModal(id){
+    rows.forEach(function(row){
 
-    deleteId = id;
-
-    document.getElementById("deleteModal").style.display="flex";
-
-}
+        let text = row.innerText.toLowerCase();
 
 
+        if(text.includes(value)){
 
-function closeDeleteModal(){
+            row.style.display = "";
 
-    document.getElementById("deleteModal").style.display="none";
+        }else{
 
-}
+            row.style.display = "none";
 
+        }
 
+    });
 
-function confirmDelete(){
+});
 
-    window.location =
-    "delete_product.php?id=" + deleteId;
-
-}
 </script>
 
 </body>
