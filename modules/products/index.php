@@ -315,11 +315,12 @@ $outStock = $stmt->fetchColumn();
 
                         <td>
                             <button
-                                type="button"
-                                class="bill-btn"
+                                type ="button" class ="bill-btn"
                                 onclick="openBillModal(
                                 '<?= $row['product_name']; ?>',
                                 <?= $row['selling_price']; ?>,
+                                '<?= $row['unit']; ?>',
+                                <?= $row['stock_qty']; ?>,
                                 <?= $row['product_id']; ?>
                                 )">
 
@@ -351,38 +352,70 @@ $outStock = $stmt->fetchColumn();
 
         <h2>Add Product To Bill</h2>
 
+            <div class="form-group">
+                <label>Product</label>
+                <input type="text" id="billProduct" readonly>
+            </div>
 
-        <div class="form-group">
+            <div class="form-group">
+                <label>Original Price (Rs.)</label>
+                <input type="number" id="originalPrice" readonly>
+            </div>
 
-            <label>Product Name</label>
+            <div class="form-group">
+                <label>Special Price (Rs.)</label>
+                <input type="number"
+                    id="billPrice"
+                    onkeyup="calculateTotal()">
+            </div>
 
-            <input type="text" id="billProduct" readonly>
+            <div class="form-group">
 
-        </div>
+                <label>Quantity</label>
 
+                <div class="qty-box">
+                    <input type="number"
+                        id="billQty"
+                        value="1.00"
+                        step="0.01"
+                        onkeyup="calculateTotal()">
+                </div>
 
-        <div class="form-group">
+            </div>
+            <div class="form-group">
 
-            <label>Price</label>
+                <label>Unit</label>
 
-            <input type="number" id="billPrice">
+                <input type="text"
+                id="billUnit"
+                readonly>
 
-        </div>
+            </div>
 
+            <div class="bill-total">
 
-        <div class="form-group">
+                Total :
+                <span>Rs. <span id="billTotal">0.00</span></span>
 
-            <label>Quantity</label>
+            </div>
 
-            <input type="number" id="billQty" value="1">
+            <div class="bill-buttons">
 
-        </div>
+                <button type = "button" class="bill-btn"
+                        onclick="addToBill()">
 
+                    🛒 Add To Bill
 
-        <button class="bill-btn">
-            Add To Bill
-        </button>
+                </button>
 
+                <button class="cancel-btn"
+                        onclick="closeBillModal()">
+
+                    Cancel
+
+                </button>
+
+            </div>
 
     </div>
 
@@ -390,74 +423,133 @@ $outStock = $stmt->fetchColumn();
 
 <script>
 
-let selectedProductId;
+let selectedProductId = 0;
 
+function addToBill(){
 
-function openBillModal(name, price, id){
+    alert("Add To Bill Clicked");
+
+}
+
+function openBillModal(name, price, unit, stock, id){
 
     selectedProductId = id;
 
-
     document.getElementById("billProduct").value = name;
 
+    document.getElementById("billUnit").value = unit;
+
+    document.getElementById("billStock").value = stock + " " + unit;
+
+    document.getElementById("originalPrice").value = price;
 
     document.getElementById("billPrice").value = price;
 
+    document.getElementById("billQty").value = "1.00";
+
+    calculateTotal();
 
     document.getElementById("billModal").style.display="flex";
 
 }
 
-
 function closeBillModal(){
 
-    document.getElementById("billModal").style.display="none";
+    document.getElementById("billModal").style.display = "none";
+
+}
+
+function increaseQty(){
+
+    let qty = document.getElementById("billQty");
+
+    qty.value = parseInt(qty.value) + 1;
+
+    calculateTotal();
+
+}
+
+function decreaseQty(){
+
+    let qty = document.getElementById("billQty");
+
+    if(parseInt(qty.value) > 1){
+
+        qty.value = parseInt(qty.value) - 1;
+
+    }
+
+    calculateTotal();
+
+}
+
+function calculateTotal(){
+
+    let price = parseFloat(
+        document.getElementById("billPrice").value
+    ) || 0;
+
+
+    let qty = parseFloat(
+        document.getElementById("billQty").value
+    ) || 0;
+
+
+    let total = price * qty;
+
+
+    document.getElementById("billTotal").innerHTML =
+    total.toFixed(2);
 
 }
 
 window.onclick = function(event){
 
-    let modal = document.getElementById("productModal");
+    let modal = document.getElementById("billModal");
 
     if(event.target == modal){
 
-        closeModal();
+        closeBillModal();
 
     }
 
 }
+
 function filterCategory(id){
 
-    window.location =
-    "index.php?category_id=" + id;
+    window.location = "index.php?category_id=" + id;
 
 }
 
-document.getElementById("searchProduct").addEventListener("keyup", function(){
+let search = document.getElementById("searchProduct");
 
-    let value = this.value.toLowerCase();
+if(search){
 
-    let rows = document.querySelectorAll(".table-container tbody tr");
+    search.addEventListener("keyup", function(){
 
+        let value = this.value.toLowerCase();
 
-    rows.forEach(function(row){
+        let rows = document.querySelectorAll(".table-container tbody tr");
 
-        let text = row.innerText.toLowerCase();
+        rows.forEach(function(row){
 
+            let text = row.innerText.toLowerCase();
 
-        if(text.includes(value)){
+            if(text.includes(value)){
 
-            row.style.display = "";
+                row.style.display = "";
 
-        }else{
+            }else{
 
-            row.style.display = "none";
+                row.style.display = "none";
 
-        }
+            }
+
+        });
 
     });
 
-});
+}
 
 </script>
 
