@@ -384,6 +384,15 @@ $outStock = $stmt->fetchColumn();
             </div>
             <div class="form-group">
 
+                <label>Current Stock</label>
+
+                <input type="text"
+                    id="billStock"
+                    readonly>
+
+            </div>
+            <div class="form-group">
+
                 <label>Unit</label>
 
                 <input type="text"
