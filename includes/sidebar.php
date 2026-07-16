@@ -33,8 +33,9 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
+        
+        <li class="<?= ($page == 'billing') ? 'active' : ''; ?>">
+            <a href="/hardware_System/modules/billing/index.php">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span>Billing</span>
             </a>

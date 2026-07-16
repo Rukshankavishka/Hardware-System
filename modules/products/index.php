@@ -436,7 +436,70 @@ let selectedProductId = 0;
 
 function addToBill(){
 
-    alert("Add To Bill Clicked");
+    let formData = new FormData();
+
+    formData.append("product_id", selectedProductId);
+
+    formData.append(
+        "product_name",
+        document.getElementById("billProduct").value
+    );
+
+    formData.append(
+        "unit",
+        document.getElementById("billUnit").value
+    );
+
+    formData.append(
+        "quantity",
+        document.getElementById("billQty").value
+    );
+
+    formData.append(
+        "original_price",
+        document.getElementById("originalPrice").value
+    );
+
+    formData.append(
+        "selling_price",
+        document.getElementById("billPrice").value
+    );
+
+    formData.append(
+        "total",
+        document.getElementById("billTotal").innerText
+    );
+
+
+    fetch("add_bill.php",{
+
+        method:"POST",
+
+        body:formData
+
+    })
+
+    .then(response => response.text())
+
+    .then(data => {
+
+        console.log(data);
+
+
+        if(data.trim()=="success"){
+
+            alert("Product Added To Bill");
+
+            closeBillModal();
+
+        }
+        else{
+
+            alert(data);
+
+        }
+
+    });
 
 }
 
