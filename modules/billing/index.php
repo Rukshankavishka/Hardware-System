@@ -7,13 +7,22 @@ require_once '../../includes/sidebar.php';
 require_once '../../includes/navbar.php';
 
 
-session_start();
 
 require_once "../../config/database.php";
 
 
 $database = new Database();
 $pdo = $database->connect();
+
+session_start();
+
+
+if(!isset($_SESSION['invoice_no'])){
+
+    header("Location: start_bill.php");
+    exit();
+
+}
 
 
 $invoice_no = $_SESSION['invoice_no'];
@@ -38,223 +47,259 @@ $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $subtotal = 0;
 
+
 foreach($cart_items as $item){
 
     $subtotal += $item['total'];
 
 }
 
+
 $discount = 0;
+
 
 $grand_total = $subtotal - $discount;
 
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="bill-container">
+<head>
+   
+    <title></title>
+    <link rel="stylesheet" href="../../assets/css/billing.css">
 
+</head>
 
-<h2>
-THISARU HARDWARE & BUILDING MATERIALS
-</h2>
+    <body>
 
+        <div class="bill-container">
 
-<p>
-No.20, Nuwara Eliya Rd,
-Nawakadadora, Pussellawa
-</p>
 
+        <div class="shop-header">
 
-<p>
-Tel: 0725342110 | 0712839006 | 0812077337
-</p>
+            <img src="../../assets/images/logo.png" class="shop-logo">
 
 
-<hr>
+            <h1>
+                THISARU HARDWARE
+            </h1>
 
+            <h3>
+                Hardware & Building Materials
+            </h3>
 
 
-<div>
+            <p>
+                No.20, Nuwara Eliya Rd,
+                Nawakadadora, Pussellawa
+            </p>
 
-Customer :
 
-<input type="text">
+            <p>
+                Tel: 0725342110 |
+                0712839006 |
+                0812077337
+            </p>
 
 
-</div>
+        </div>
 
 
-<div>
+        <hr>
 
-Invoice No :
 
-<?= $invoice_no ?>
 
-</div>
+        <div class="bill-info">
 
 
-<div>
+            <div>
+            Customer :
 
-Date :
+            <input type="text"
+            class="customer-input">
 
-<?= date("Y-m-d") ?>
+            </div>
 
-</div>
 
+            <div>
 
-<hr>
+            Invoice No :
+            <b><?= $invoice_no ?></b>
 
+            </div>
 
 
-<table>
+            <div>
 
-<thead>
+            Date :
+            <?= date("Y-m-d H:i") ?>
 
-<tr>
+            </div>
 
-<th>Product</th>
-<th>Qty</th>
-<th>Price</th>
-<th>Total</th>
-<th>Action</th>
 
-</tr>
+        </div>
 
-</thead>
 
+        <hr>
 
 
-<tbody>
 
+        <table class="bill-table">
 
-<?php foreach($cart_items as $row){ ?>
+        <thead>
 
+        <tr>
 
-<tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Action</th>
 
-<td>
-<?= $row['product_name']; ?>
-</td>
+        </tr>
 
+        </thead>
 
-<td>
-<?= $row['quantity']." ".$row['unit']; ?>
-</td>
 
 
-<td>
-Rs. <?= $row['selling_price']; ?>
-</td>
+        <tbody>
 
 
-<td>
-Rs. <?= $row['total']; ?>
-</td>
+        <?php foreach($cart_items as $row){ ?>
 
 
-<td>
+        <tr>
 
-<button onclick="removeItem(<?= $row['cart_id']; ?>)">
-❌ Remove
-</button>
+        <td>
+        <?= $row['product_name']; ?>
+        </td>
 
-</td>
 
+        <td>
+        <?= $row['quantity']." ".$row['unit']; ?>
+        </td>
 
-</tr>
 
+        <td>
+        Rs. <?= $row['selling_price']; ?>
+        </td>
 
-<?php } ?>
 
+        <td>
+        Rs. <?= $row['total']; ?>
+        </td>
 
-</tbody>
 
-</table>
+        <td>
 
+        <button onclick="removeItem(<?= $row['cart_id']; ?>)">
+        ❌ Remove
+        </button>
 
+        </td>
 
-<hr>
 
+        </tr>
 
-<div class="summary">
 
+        <?php } ?>
 
-<p>
-Subtotal :
 
-Rs. <?= number_format($subtotal,2); ?>
+        </tbody>
 
-</p>
+        </table>
 
 
 
-<p>
+        <hr>
 
-Discount :
 
-<input 
-type="number"
-id="discount"
-value="0">
+        <div class="summary">
 
-</p>
 
+        <p>
+        Subtotal :
 
+        Rs. <?= number_format($subtotal,2); ?>
 
-<h3>
+        </p>
 
-Grand Total :
 
-Rs.
 
-<span id="grandTotal">
+        <p>
 
-<?= number_format($grand_total,2); ?>
+        Discount :
 
-</span>
+        <input 
+        type="number"
+        id="discount"
+        value="0">
 
-</h3>
+        </p>
 
 
-</div>
 
+        <h3>
 
-<button>
-Print Bill
-</button>
+        Grand Total :
 
-</div>
+        Rs.
 
-<script>
+        <span id="grandTotal">
 
-document
-.getElementById("discount")
-.addEventListener("keyup",function(){
+        <?= number_format($grand_total,2); ?>
 
+        </span>
 
-let subtotal =
-<?= $subtotal ?>;
+        </h3>
 
 
-let discount =
-parseFloat(this.value) || 0;
+        </div>
 
 
+        <div class="bill-actions">
 
-let total =
-subtotal - discount;
+            <button onclick="window.print()">
+            🖨 Print Bill
+            </button>
 
+        </div>
 
+        </div>
 
-document.getElementById("grandTotal")
-.innerHTML =
-total.toFixed(2);
+        <script>
 
+        document
+        .getElementById("discount")
+        .addEventListener("keyup",function(){
 
 
-});
+        let subtotal =
+        <?= $subtotal ?>;
 
-</script>
 
+        let discount =
+        parseFloat(this.value) || 0;
+
+
+
+        let total =
+        subtotal - discount;
+
+
+
+        document.getElementById("grandTotal")
+        .innerHTML =
+        total.toFixed(2);
+
+
+
+        });
+
+        </script>
+    </body>
+</html>
 <?php require_once '../../includes/footer.php'; ?>
 
