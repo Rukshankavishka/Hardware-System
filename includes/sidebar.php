@@ -41,8 +41,8 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
+        <li class="<?= ($page == 'customers') ? 'active' : ''; ?>">
+            <a href="/hardware_system/modules/customers/index.php">
                 <i class="fa-solid fa-users"></i>
                 <span>Customers</span>
             </a>

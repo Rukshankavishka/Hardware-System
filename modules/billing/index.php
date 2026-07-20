@@ -74,7 +74,7 @@ $grand_total = $subtotal - $discount;
 
     <body>
 
-        <div class="bill-container">
+        <div class="bill-container" id="billContainer">
 
 
         <div class="shop-header">
@@ -113,16 +113,6 @@ $grand_total = $subtotal - $discount;
 
         <div class="bill-info">
 
-
-            <div>
-            Customer :
-
-            <input type="text"
-            class="customer-input">
-
-            </div>
-
-
             <div>
 
             Invoice No :
@@ -138,6 +128,13 @@ $grand_total = $subtotal - $discount;
 
             </div>
 
+            <div>
+            Customer :
+
+            <input type="text"
+            class="customer-input">
+
+            </div>
 
         </div>
 
@@ -155,8 +152,10 @@ $grand_total = $subtotal - $discount;
         <th>Product</th>
         <th>Qty</th>
         <th>Price</th>
-        <th>Total</th>
+        <th>Discount</th>
+        <th>Amount</th>
         <th>Action</th>
+
 
         </tr>
 
@@ -166,45 +165,60 @@ $grand_total = $subtotal - $discount;
 
         <tbody>
 
+            <?php foreach($cart_items as $row){ ?>
 
-        <?php foreach($cart_items as $row){ ?>
+            <tr>
 
+                <!-- Product Name -->
+                <td>
+                    <?= $row['product_name']; ?>
+                </td>
 
-        <tr>
+                <!-- Quantity -->
+                <td>
+                    <input type="number"
+                        class="form-control qty"
+                        value="<?= $row['quantity']; ?>"
+                        min="1"
+                        style="width:80px;">
+                </td>
 
-        <td>
-        <?= $row['product_name']; ?>
-        </td>
+                <!-- Price -->
+                <td>
+                    <input type="number"
+                        class="form-control price"
+                        value="<?= $row['selling_price']; ?>"
+                        step="0.01"
+                        style="width:120px;">
+                </td>
 
+                <!-- Discount -->
+                <td>
+                    <input type="number"
+                        class="form-control discount"
+                        value="0"
+                        min="0"
+                        max="100"
+                        style="width:100px;">
+                </td>
 
-        <td>
-        <?= $row['quantity']." ".$row['unit']; ?>
-        </td>
+                <!-- Row Total -->
+                <td>
+                    Rs. <span class="line-total"><?= $row['total']; ?></span>
+                </td>
 
+                <!-- Remove -->
+               <td>
+                    <button type="button"
+                            class="btn btn-danger"
+                            onclick="removeItem(<?= $row['cart_id']; ?>)">
+                        ❌ Remove
+                    </button>
+                </td>
 
-        <td>
-        Rs. <?= $row['selling_price']; ?>
-        </td>
+            </tr>
 
-
-        <td>
-        Rs. <?= $row['total']; ?>
-        </td>
-
-
-        <td>
-
-        <button onclick="removeItem(<?= $row['cart_id']; ?>)">
-        ❌ Remove
-        </button>
-
-        </td>
-
-
-        </tr>
-
-
-        <?php } ?>
+            <?php } ?>
 
 
         </tbody>
@@ -226,21 +240,6 @@ $grand_total = $subtotal - $discount;
 
         </p>
 
-
-
-        <p>
-
-        Discount :
-
-        <input 
-        type="number"
-        id="discount"
-        value="0">
-
-        </p>
-
-
-
         <h3>
 
         Grand Total :
@@ -249,8 +248,8 @@ $grand_total = $subtotal - $discount;
 
         <span id="grandTotal">
 
-        <?= number_format($grand_total,2); ?>
-
+            <?= number_format($grand_total,2); ?>
+            0.00
         </span>
 
         </h3>
@@ -258,47 +257,145 @@ $grand_total = $subtotal - $discount;
 
         </div>
 
+            <div class="summary">
 
-        <div class="bill-actions">
+                <h5>Payment</h5>
 
-            <button onclick="window.print()">
-            🖨 Print Bill
-            </button>
+                <label>
+                    <input type="radio" name="payment_method" value="Cash" checked>
+                    Cash
+                </label>
+
+                <label class="ms-3">
+                    <input type="radio" name="payment_method" value="Card">
+                    Card
+                </label>
+
+
+                <div class="mt-3">
+
+                    <label>Paid Amount Rs.</label>
+
+                    <input type="number"
+                        id="paidAmount"
+                        class="form-control"
+                        placeholder="Enter amount">
+
+                </div>
+
+
+                <div class="mt-3">
+
+                    <h5>
+                        Balance :
+                        Rs. <span id="balance">0.00</span>
+                    </h5>
+
+                </div>
+
+            </div>
+
+            <div class="bill-actions">
+
+                        <button type="button" onclick="printBill()" class="no-print">
+                            🖨 Print Bill
+                        </button>
+
+            </div>
+
+            <div align="center">
+                <br>
+                <br>
+                <br>
+                <br>
+                <h3>
+                    Thank You! & Come again
+
+                </h3>
+
+            </div>
+
 
         </div>
 
-        </div>
+       <script>
 
-        <script>
+            function calculateRow(row){
 
-        document
-        .getElementById("discount")
-        .addEventListener("keyup",function(){
+                let qty = parseFloat(row.querySelector('.qty').value) || 0;
+                let price = parseFloat(row.querySelector('.price').value) || 0;
+                let discount = parseFloat(row.querySelector('.discount').value) || 0;
+
+                let subtotal = qty * price;
+                let discountAmount = subtotal * (discount / 100);
+                let total = subtotal - discountAmount;
+
+                row.querySelector('.line-total').innerHTML = total.toFixed(2);
+
+                calculateBillTotal();
+                calculateRow(newRow);
+            }
+
+            function calculateBillTotal(){
+
+                let subtotal = 0;
+
+                document.querySelectorAll('.line-total').forEach(function(cell){
+                    subtotal += parseFloat(cell.innerHTML) || 0;
+                });
+
+                document.getElementById('grandTotal').innerHTML = subtotal.toFixed(2);
+            }
+
+            // Inputs වල event listeners
+            document.querySelectorAll('.qty, .price, .discount').forEach(function(input){
+
+                input.addEventListener('keyup', function(){
+                    calculateRow(this.closest('tr'));
+                });
+
+                input.addEventListener('change', function(){
+                    calculateRow(this.closest('tr'));
+                });
+
+            });
+
+            calculateBillTotal();
+
+            function printBill(){
+                window.print();
+            }
+
+            document.getElementById("paidAmount")
+                .addEventListener("input", function(){
+
+                    let grandTotal = 
+                    parseFloat(document.getElementById("grandTotal").innerText) || 0;
 
 
-        let subtotal =
-        <?= $subtotal ?>;
+                    let paid = 
+                    parseFloat(this.value) || 0;
 
 
-        let discount =
-        parseFloat(this.value) || 0;
+                    let balance = paid - grandTotal;
 
 
+                    document.getElementById("balance").innerText =
+                    balance.toFixed(2);
 
-        let total =
-        subtotal - discount;
+                });
 
+                function removeItem(cart_id){
 
+                    if(confirm("Remove this product from bill?")){
 
-        document.getElementById("grandTotal")
-        .innerHTML =
-        total.toFixed(2);
+                        window.location.href = "remove_cart.php?id=" + cart_id;
 
+                    }
 
+                }
 
-        });
-
-        </script>
+            </script>
     </body>
 </html>
 <?php require_once '../../includes/footer.php'; ?>
