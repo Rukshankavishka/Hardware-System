@@ -48,8 +48,8 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
+        <li  class="<?= ($page == 'suppliers') ? 'active' : ''; ?>">
+            <a href="/hardware_system/modules/suppliers/index.php">
                 <i class="fa-solid fa-truck"></i>
                 <span>Suppliers</span>
             </a>

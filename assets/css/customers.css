@@ -98,22 +98,6 @@
 
 }
 
-
-
-/* Status */
-
-.active{
-
-    background:#d1fae5;
-    color:#047857;
-    padding:5px 12px;
-    border-radius:20px;
-    font-size:14px;
-
-}
-
-
-
 /* Action Buttons */
 
 
@@ -279,11 +263,12 @@
     box-shadow:0 5px 15px rgba(0,0,0,0.1);
 
 }
+
 /* Customer Search */
 
 .search-box{
 
-    margin-bottom:20px;
+    margin-bottom:5px;
 
 }
 
