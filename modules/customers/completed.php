@@ -75,6 +75,7 @@ Back Customers
 
 <th>Status</th>
 
+<th>Action</th>
 </tr>
 
 </thead>
@@ -123,6 +124,17 @@ Completed
 
 </td>
 
+<td>
+
+    <button class="delete"
+    onclick="deleteCustomer(<?= $row['id']; ?>)">
+
+    Delete
+
+    </button>
+
+</td>
+
 
 </tr>
 
@@ -141,7 +153,19 @@ Completed
 
 </div>
 
+<script>
 
+    function deleteCustomer(id){
+
+    if(confirm("Are you sure you want to delete this customer?")){
+
+        window.location.href="delete_customer.php?id="+id;
+
+    }
+
+}
+
+</script>
 </body>
 
 </html>

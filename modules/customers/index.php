@@ -12,6 +12,43 @@ require_once '../../config/database.php';
 $database = new Database();
 $conn = $database->connect();
 
+if(isset($_POST['update_credit'])){
+
+    $id = $_POST['customer_id'];
+
+    $newCredit = $_POST['new_credit'];
+
+    $stmt = $conn->prepare("SELECT * FROM customers WHERE id=?");
+    $stmt->execute([$id]);
+
+    $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $totalCredit = $customer['credit_amount'] + $newCredit;
+
+    $balance = $totalCredit - $customer['paid_amount'];
+
+    $update = $conn->prepare("
+        UPDATE customers
+        SET credit_amount=?,
+            balance=?,
+            purchase_date=CURDATE()
+        WHERE id=?
+    ");
+
+    $update->execute([
+        $totalCredit,
+        $balance,
+        $id
+    ]);
+
+    echo "<script>
+            alert('Credit Updated Successfully!');
+            window.location='index.php';
+          </script>";
+
+    exit;
+}
+
 if(isset($_POST['payment_save'])){
 
 
@@ -234,8 +271,8 @@ $customers = $conn->query(
 
                         <td>
 
-                            <button class="edit">
-                                Edit
+                            <button class="edit" onclick="openEditModal(<?= $row['id']; ?>,'<?= $row['customer_name']; ?>',<?= $row['credit_amount']; ?>)">
+                                    Edit
                             </button>
 
                             <button class="payment" onclick="openPaymentModal( <?= $row['id']; ?>,<?= $row['balance']; ?>)">
@@ -375,6 +412,57 @@ $customers = $conn->query(
     </div>
 
 </div>
+<div class="modal" id="editModal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeEditModal()">&times;</span>
+
+        <h3>Add New Credit</h3>
+
+        <form method="POST">
+
+            <input type="hidden"
+                   id="edit_id"
+                   name="customer_id">
+
+            <label>Customer Name</label>
+
+            <input type="text"
+                   id="edit_name"
+                   readonly>
+
+            <br><br>
+
+            <label>Current Credit</label>
+
+            <input type="text"
+                   id="edit_credit"
+                   readonly>
+
+            <br><br>
+
+            <label>New Credit Amount</label>
+
+            <input type="number"
+                   name="new_credit"
+                   required>
+
+            <br><br>
+
+            <button type="submit"
+                    name="update_credit"
+                    class="edit">
+
+                Update Credit
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
     <script>
             function openCustomerModal(){
 
@@ -446,6 +534,24 @@ $customers = $conn->query(
                 });
 
             });
+
+            function openEditModal(id,name,credit){
+
+                document.getElementById("editModal").style.display="flex";
+
+                document.getElementById("edit_id").value=id;
+
+                document.getElementById("edit_name").value=name;
+
+                document.getElementById("edit_credit").value=credit;
+
+            }
+
+            function closeEditModal(){
+
+                document.getElementById("editModal").style.display="none";
+
+            }
 
     </script>
 

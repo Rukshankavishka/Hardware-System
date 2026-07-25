@@ -289,3 +289,20 @@
     border-color:#0d6efd;
 
 }
+
+.delete{
+
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+
+}
+
+.delete:hover{
+
+    background:#bb2d3b;
+
+}

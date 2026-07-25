@@ -73,9 +73,4 @@ $stmt->execute([
 
 $_SESSION['invoice_no'] = $invoice_no;
 
-
-
-echo $invoice_no;
-
-
 ?>
