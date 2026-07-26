@@ -125,18 +125,20 @@ onclick="openSupplierModal()">
             <td>
 
 
-            <button class="view-btn">
+            <button
+                class="view-btn"
+                onclick="window.location='supplier_details.php?id=<?= $row['supplier_id']; ?>'">
 
-            👁 View
+                👁 View
 
             </button>
 
 
+            <button 
+                class="delete-btn"
+                onclick="openDeletePopup(<?= $row['supplier_id']; ?>)">
 
-            <button class="delete-btn"
-            onclick="deleteSupplier(<?= $row['supplier_id']; ?>)">
-
-            🗑 Delete
+                🗑 Delete
 
             </button>
 
@@ -156,11 +158,43 @@ onclick="openSupplierModal()">
 </table>
 
 
-
 </div>
 
 
+<div id="deleteModal" class="delete-modal">
 
+    <div class="delete-box">
+
+        <h3>Delete Supplier?</h3>
+
+        <p>
+            Are you sure you want to delete this supplier?
+        </p>
+
+        <div class="delete-actions">
+
+            <button 
+            class="cancel-delete"
+            onclick="closeDeletePopup()">
+
+            Cancel
+
+            </button>
+
+
+            <button 
+            class="confirm-delete"
+            onclick="confirmDelete()">
+
+            Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- ADD SUPPLIER MODAL -->
@@ -342,6 +376,31 @@ text.includes(value) ? "" : "none";
 
 });
 
+let deleteId = 0;
+
+
+function openDeletePopup(id){
+
+    deleteId = id;
+
+    document.getElementById("deleteModal").style.display = "flex";
+
+}
+
+
+function closeDeletePopup(){
+
+    document.getElementById("deleteModal").style.display = "none";
+
+}
+
+
+function confirmDelete(){
+
+    window.location.href =
+    "delete_supplier.php?id=" + deleteId;
+
+}
 
 </script>
 </body>

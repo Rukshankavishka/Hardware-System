@@ -315,14 +315,15 @@ $outStock = $stmt->fetchColumn();
 
                         <td>
                             <button
-                                type ="button" class ="bill-btn"
-                                onclick="openBillModal(
-                                '<?= $row['product_name']; ?>',
-                                <?= $row['selling_price']; ?>,
-                                '<?= $row['unit']; ?>',
-                                <?= $row['stock_qty']; ?>,
-                                <?= $row['product_id']; ?>
-                                )">
+                                type="button"
+                                class="bill-btn"
+                                onclick='openBillModal(
+                                <?= json_encode($row["product_name"]); ?>,
+                                <?= $row["selling_price"]; ?>,
+                                <?= json_encode($row["unit"]); ?>,
+                                <?= $row["stock_qty"]; ?>,
+                                <?= $row["product_id"]; ?>
+                                )'>
 
                                 🛒 Add Bill
 
