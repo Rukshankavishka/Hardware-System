@@ -55,8 +55,8 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
+        <li class="<?= ($page == 'fleet') ? 'active' : ''; ?>">
+            <a href="/hardware_system/modules/fleet/index.php">
                 <i class="fa-solid fa-truck-fast"></i>
                 <span>Fleet Management</span>
             </a>
