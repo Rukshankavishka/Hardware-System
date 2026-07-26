@@ -62,8 +62,15 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
+        <li class="<?= ($page == 'employees') ? 'active' : ''; ?>">
+            <a href="/hardware_system/modules/employees/index.php">
+                <i class="fa-solid fa-users"></i>
+                <span>Employees</span>
+            </a>
+        </li>
+
+        <li  class="<?= ($page == 'reports') ? 'active' : ''; ?>">
+            <a href="/hardware_system/modules/reports/index.php">
                 <i class="fa-solid fa-chart-line"></i>
                 <span>Reports</span>
             </a>
