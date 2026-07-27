@@ -2,12 +2,6 @@
 
 $page = "billing";
 
-require_once '../../includes/header.php';
-require_once '../../includes/sidebar.php';
-require_once '../../includes/navbar.php';
-
-
-
 require_once "../../config/database.php";
 
 
@@ -23,6 +17,10 @@ if(!isset($_SESSION['invoice_no'])){
     exit();
 
 }
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
+require_once '../../includes/navbar.php';
+
 
 
 $invoice_no = $_SESSION['invoice_no'];

@@ -69,6 +69,13 @@
             </a>
         </li>
 
+        <li class="<?= ($page == 'accounts') ? 'active' : ''; ?>" >
+            <a href="/hardware_system/modules/accounts/index.php">
+                <i class="fa-solid fa-sack-dollar"></i>
+                <span>Accounts</span>
+            </a>
+        </li>
+
         <li  class="<?= ($page == 'reports') ? 'active' : ''; ?>">
             <a href="/hardware_system/modules/reports/index.php">
                 <i class="fa-solid fa-chart-line"></i>

@@ -64,7 +64,40 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
     ";
 
+    $check = $pdo->prepare("
 
+    SELECT attendance_id
+
+    FROM attendance
+
+    WHERE employee_id = :employee_id
+
+    AND attendance_date = :attendance_date
+
+    ");
+
+    $check->execute([
+
+    ":employee_id"=>$employee_id,
+
+    ":attendance_date"=>$attendance_date
+
+    ]);
+
+
+    if($check->rowCount() > 0){
+
+        echo "<script>
+
+        alert('Attendance already added for this employee on this date.');
+
+        window.history.back();
+
+        </script>";
+
+        exit();
+
+    }
 
     $stmt = $pdo->prepare($sql);
 
@@ -118,9 +151,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
                 <?php foreach($employees as $emp){ ?>
 
-                <option value="<?= $emp['employee_id']; ?>">
+                <option
+                    value="<?= $emp['employee_id']; ?>"
+                    <?= ($selected_employee == $emp['employee_id']) ? 'selected' : ''; ?>>
 
-                    <?= $emp['employee_code']; ?> -<?= $emp['name']; ?>
+                    <?= $emp['employee_code']; ?> - <?= $emp['name']; ?>
 
                 </option>
 

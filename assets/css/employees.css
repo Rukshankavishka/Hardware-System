@@ -521,3 +521,149 @@
     background:#f8fafc;
 
 }
+
+.present{
+
+    color:#16a34a;
+
+    font-weight:bold;
+
+}
+
+.absent{
+
+    color:#dc2626;
+
+    font-weight:bold;
+
+}
+
+.leave{
+
+    color:#2563eb;
+
+    font-weight:bold;
+
+}
+
+.halfday{
+
+    color:#d97706;
+
+    font-weight:bold;
+
+}
+
+/* ===========================
+   ATTENDANCE PAGE
+=========================== */
+
+.employee-card{
+
+    max-width:700px;
+
+    margin:auto;
+
+    background:#fff;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.employee-card form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.employee-card label{
+
+    font-weight:600;
+
+    color:#374151;
+
+    margin-bottom:5px;
+
+}
+
+.employee-card input,
+.employee-card select{
+
+    width:100%;
+
+    padding:12px 15px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+
+    box-sizing:border-box;
+
+}
+
+.employee-card input:focus,
+.employee-card select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 8px rgba(37,99,235,.2);
+
+}
+
+.save-btn{
+
+    margin-top:10px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border:none;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
