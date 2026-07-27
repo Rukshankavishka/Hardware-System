@@ -54,10 +54,7 @@ foreach($cart_items as $item){
 
 
 $discount = 0;
-
-
 $grand_total = $subtotal - $discount;
-
 
 ?>
 <!DOCTYPE html>
@@ -295,10 +292,9 @@ $grand_total = $subtotal - $discount;
 
             <div class="bill-actions">
 
-                        <button type="button" onclick="printBill()" class="no-print">
+                        <button type="button" onclick="completeBill()" class="no-print">
                             🖨 Print Bill
                         </button>
-
             </div>
 
             <div align="center">
@@ -360,8 +356,10 @@ $grand_total = $subtotal - $discount;
 
             calculateBillTotal();
 
-            function printBill(){
-                window.print();
+            function completeBill(){
+
+                window.location.href="save_bill.php";
+
             }
 
             document.getElementById("paidAmount")

@@ -6,8 +6,100 @@ require_once '../../includes/header.php';
 require_once '../../includes/sidebar.php';
 require_once '../../includes/navbar.php';
 
-?>
+require_once "../../config/database.php";
 
+$database = new Database();
+$pdo = $database->connect();
+
+
+// Today's Date
+
+$today = date('Y-m-d');
+
+
+// Get Transactions
+
+$stmt = $pdo->prepare("
+
+SELECT *
+
+FROM transactions
+
+WHERE transaction_date = :date
+
+ORDER BY transaction_id DESC
+
+");
+
+
+$stmt->execute([
+
+":date"=>$today
+
+]);
+
+
+$transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+// Total Income
+
+$income = $pdo->prepare("
+
+SELECT SUM(amount) AS total
+
+FROM transactions
+
+WHERE transaction_date = :date
+
+AND type='IN'
+
+");
+
+
+$income->execute([
+
+":date"=>$today
+
+]);
+
+
+$total_income = $income->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+
+
+// Total Expense
+
+$expense = $pdo->prepare("
+
+SELECT SUM(amount) AS total
+
+FROM transactions
+
+WHERE transaction_date = :date
+
+AND type='OUT'
+
+");
+
+
+$expense->execute([
+
+":date"=>$today
+
+]);
+
+
+$total_expense = $expense->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+
+
+// Balance
+
+$balance = $total_income - $total_expense;
+
+?>
 <link rel="stylesheet" href="../../assets/css/accounts.css">
 
 
@@ -19,7 +111,7 @@ require_once '../../includes/navbar.php';
         <h2>
             💰 Accounts Dashboard
         </h2>
-
+        <br>
 
         <button class="add-btn" onclick="openTransactionModal()">
             + Add Transaction
@@ -27,7 +119,7 @@ require_once '../../includes/navbar.php';
 
     </div>
 
-
+    <br>
 
     <div class="account-summary">
 
@@ -39,7 +131,7 @@ require_once '../../includes/navbar.php';
             </h4>
 
             <h2>
-                Rs. 0.00
+                Rs. <?= number_format($total_income,2); ?>
             </h2>
 
         </div>
@@ -53,7 +145,7 @@ require_once '../../includes/navbar.php';
             </h4>
 
             <h2>
-                Rs. 0.00
+                Rs. <?= number_format($total_expense,2); ?>
             </h2>
 
         </div>
@@ -67,7 +159,7 @@ require_once '../../includes/navbar.php';
             </h4>
 
             <h2>
-                Rs. 0.00
+                Rs. <?= number_format($balance,2); ?>
             </h2>
 
         </div>
@@ -109,11 +201,58 @@ require_once '../../includes/navbar.php';
 
                 <tr>
 
-                    <td colspan="6">
-                        No Transactions Found
+                    <?php foreach($transactions as $row){ ?>
+
+
+                    <td>
+                    <?= date("d-m-Y",strtotime($row['transaction_date'])); ?>
                     </td>
 
-                </tr>
+
+                    <td>
+
+                    <?php
+
+                    if($row['type']=="IN"){
+
+                    echo "<span class='present'>IN</span>";
+
+                    }else{
+
+                    echo "<span class='absent'>OUT</span>";
+
+                    }
+
+                    ?>
+
+                    </td>
+
+
+                    <td>
+                    <?= $row['category']; ?>
+                    </td>
+
+
+                    <td>
+                    <?= $row['description']; ?>
+                    </td>
+
+
+                    <td>
+                    Rs. <?= number_format($row['amount'],2); ?>
+                    </td>
+
+
+                    <td>
+                    <?= $row['payment_method']; ?>
+                    </td>
+
+
+                    </tr>
+
+
+                    <?php } ?>
+
 
             </tbody>
 
