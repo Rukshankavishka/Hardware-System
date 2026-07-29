@@ -109,10 +109,8 @@ $grand_total = $subtotal - $discount;
         <div class="bill-info">
 
             <div>
-
-            Invoice No :
-            <b><?= $invoice_no ?></b>
-
+                Invoice No :
+                <b id="invoiceNo"><?= $invoice_no ?></b>
             </div>
 
 
@@ -358,8 +356,40 @@ $grand_total = $subtotal - $discount;
 
             function completeBill(){
 
-                window.location.href="save_bill.php";
+                let paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
+                fetch("save_bill.php", {
+                    method: "POST",
+                    headers: {"Content-Type":"application/x-www-form-urlencoded"},
+                    body: "payment_method=" + encodeURIComponent(paymentMethod)
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    if(data.status === "success"){
+
+                        // 1. Print current bill (as is, with old invoice number)
+                        window.print();
+
+                        // 2. After print dialog closes, reset UI for the NEW invoice
+                        document.getElementById("invoiceNo").innerText = data.new_invoice_no;
+
+                        document.querySelector(".bill-table tbody").innerHTML = "";
+
+                        document.getElementById("grandTotal").innerText = "0.00";
+                        document.getElementById("paidAmount").value = "";
+                        document.getElementById("balance").innerText = "0.00";
+                        document.querySelector(".customer-input").value = "";
+
+                    }else{
+                        alert(data.message);
+                    }
+
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Network error, please try again.");
+                });
             }
 
             document.getElementById("paidAmount")
