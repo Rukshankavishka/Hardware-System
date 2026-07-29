@@ -69,6 +69,13 @@
             </a>
         </li>
 
+        <li class="<?= ($page == 'stock') ? 'active' : ''; ?>">
+            <a href="/hardware_system/modules/stock/index.php">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>Stock</span>
+            </a>
+        </li>
+
         <li class="<?= ($page == 'accounts') ? 'active' : ''; ?>" >
             <a href="/hardware_system/modules/accounts/index.php">
                 <i class="fa-solid fa-sack-dollar"></i>
