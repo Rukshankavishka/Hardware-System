@@ -1,0 +1,284 @@
+.report-container{
+
+padding:20px;
+
+}
+
+
+.report-header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+
+}
+
+
+.month-filter{
+
+display:flex;
+gap:10px;
+
+}
+
+
+.month-filter select,
+.month-filter button{
+
+padding:10px 15px;
+border-radius:8px;
+border:1px solid #ddd;
+
+}
+
+
+.month-filter button{
+
+background:#2563eb;
+color:white;
+border:none;
+
+}
+
+
+
+/* ===========================
+   REPORT CARDS
+=========================== */
+
+.report-cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1 fr);
+
+    gap:25px;
+
+    margin-bottom:30px;
+
+}
+
+
+.report-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    transition:0.35s;
+
+    border:1px solid #edf2f7;
+
+    box-shadow:
+    0 8px 25px rgba(15,23,42,.06);
+
+}
+
+
+.report-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+    0 20px 45px rgba(37,99,235,.18);
+
+}
+
+
+.report-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:6px;
+
+    height:100%;
+
+    background:#2563eb;
+
+}
+
+
+.report-card i{
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    font-size:28px;
+
+    margin-bottom:18px;
+
+}
+
+
+.report-card h5{
+
+    font-size:15px;
+
+    color:#64748b;
+
+    font-weight:600;
+
+    margin-bottom:10px;
+
+}
+
+
+.report-card h3{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+}
+
+
+.report-card small{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:#16a34a;
+
+    font-weight:600;
+
+}
+
+
+
+.chart-box{
+
+background:white;
+
+margin-top:25px;
+
+padding:25px;
+
+border-radius:15px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+
+.chart-placeholder{
+
+height:300px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+color:#94a3b8;
+
+background:#f8fafc;
+
+border-radius:10px;
+
+}
+
+
+
+.chart-row{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:20px;
+
+}
+
+
+
+@media(max-width:900px){
+
+.report-cards{
+
+grid-template-columns:1fr;
+
+}
+
+
+.chart-row{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+.sales-chart{
+
+    max-height:350px !important;
+
+}
+
+.chart-box{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    height:400px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.sales-card::before{
+    background:#2563eb;
+}
+
+.income-card::before{
+    background:#10b981;
+}
+
+.profit-card::before{
+    background:#f59e0b;
+}
+
+.bill-card::before{
+    background:#8b5cf6;
+}
+
+.product-card::before{
+    background:#ef4444;
+}
+
+.stock-card::before{
+    background:#06b6d4;
+}

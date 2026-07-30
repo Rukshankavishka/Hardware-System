@@ -52,18 +52,77 @@ try{
         ":payment_method"=>$_POST['payment_method'] ?? 'Cash'
     ]);
 
+    // ---- Get cart items (with everything we need: stock update, invoice_items, profit) ----
     $items = $pdo->prepare("
-        SELECT product_id, quantity FROM temp_cart WHERE invoice_no=:invoice_no
+        SELECT
+            product_id,
+            product_name,
+            quantity,
+            selling_price,
+            total
+        FROM temp_cart
+        WHERE invoice_no = :invoice_no
     ");
     $items->execute([":invoice_no"=>$invoice_no]);
 
     foreach($items as $row){
+
+        // 1) Reduce stock
         $update = $pdo->prepare("
             UPDATE products SET stock_qty = stock_qty - :qty WHERE product_id = :product_id
         ");
         $update->execute([":qty"=>$row['quantity'], ":product_id"=>$row['product_id']]);
+
+        // 2) Buying Price එක products table එකෙන් ගන්න
+        $buy = $pdo->prepare("
+            SELECT buying_price
+            FROM products
+            WHERE product_id = :product_id
+        ");
+        $buy->execute([":product_id"=>$row['product_id']]);
+        $product = $buy->fetch(PDO::FETCH_ASSOC);
+        $buying_price = $product['buying_price'];
+
+        $profit = ($row['selling_price'] - $buying_price) * $row['quantity'];
+
+        // 3) invoice_items එකට save කරන්න
+        $save = $pdo->prepare("
+            INSERT INTO invoice_items
+            (
+                invoice_no,
+                product_id,
+                product_name,
+                quantity,
+                buying_price,
+                selling_price,
+                line_total,
+                profit
+            )
+            VALUES
+            (
+                :invoice_no,
+                :product_id,
+                :product_name,
+                :quantity,
+                :buying_price,
+                :selling_price,
+                :line_total,
+                :profit
+            )
+        ");
+        $save->execute([
+            ":invoice_no"    => $invoice_no,
+            ":product_id"    => $row['product_id'],
+            ":product_name"  => $row['product_name'],
+            ":quantity"      => $row['quantity'],
+            ":buying_price"  => $buying_price,
+            ":selling_price" => $row['selling_price'],
+            ":line_total"    => $row['total'],
+            ":profit"        => $profit
+        ]);
     }
 
+    // Now that items are processed, clear the temp cart
     $stmt = $pdo->prepare("DELETE FROM temp_cart WHERE invoice_no=:invoice_no");
     $stmt->execute([":invoice_no"=>$invoice_no]);
 
