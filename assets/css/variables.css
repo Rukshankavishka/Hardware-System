@@ -1,0 +1,62 @@
+/* =====================================================
+   HARDWARE SYSTEM — DESIGN TOKENS
+   Central palette & scale. Edit colors here only —
+   every other file reads from these variables.
+===================================================== */
+
+:root{
+
+    /* ---- Brand ---- */
+    --primary-darker:#08265C;
+    --primary-dark:#0F3D8D;
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+    --primary-light:#EEF2FF;
+
+    /* ---- Neutrals / Surfaces ---- */
+    --bg:#F8FAFC;
+    --bg-alt:#F1F5F9;
+    --surface:#FFFFFF;
+    --border:#E2E8F0;
+
+    /* ---- Text ---- */
+    --text-dark:#1E293B;
+    --text-darker:#0F172A;
+    --text-muted:#64748B;
+    --text-soft:#94A3B8;
+
+    /* ---- Status ---- */
+    --success:#16A34A;
+    --success-dark:#15803D;
+    --success-light:#DCFCE7;
+
+    --warning:#EA580C;
+    --warning-dark:#C2410C;
+    --warning-light:#FFEDD5;
+
+    --danger:#DC2626;
+    --danger-dark:#B91C1C;
+    --danger-light:#FEE2E2;
+
+    --info:#0EA5E9;
+    --info-light:#E0F2FE;
+
+    /* ---- Sidebar-specific text ---- */
+    --sidebar-text:#CBD5E1;
+    --sidebar-text-danger:#FCA5A5;
+
+    /* ---- Radius ---- */
+    --radius-sm:8px;
+    --radius-md:12px;
+    --radius-lg:16px;
+    --radius-xl:20px;
+
+    /* ---- Shadows ---- */
+    --shadow-sm:0 2px 8px rgba(15,23,42,.06);
+    --shadow-md:0 8px 25px rgba(15,23,42,.08);
+    --shadow-lg:0 15px 35px rgba(15,23,42,.12);
+    --shadow-primary:0 8px 18px rgba(37,99,235,.35);
+
+    /* ---- Transitions ---- */
+    --transition:.25s ease;
+}

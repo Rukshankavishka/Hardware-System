@@ -16,14 +16,6 @@
 
         <div class="navbar-right">
 
-            <div class="search-box">
-
-                <i class="fa-solid fa-search"></i>
-
-                <input type="text" placeholder="Search...">
-
-            </div>
-
             <button class="icon-btn">
                 <i class="fa-regular fa-bell"></i>
             </button>

@@ -1,821 +1,499 @@
-/* SUPPLIERS PAGE */
+@import url("variables.css");
+
+/* ================================
+   SUPPLIERS LIST PAGE
+================================ */
 
 .page-container{
-
     padding:25px;
-    background:#f8f9fb;
+    background:var(--bg);
     min-height:100vh;
-    font-family:Arial, sans-serif;
-
 }
-
-
-/* Title */
 
 .page-container h2{
-
     font-size:26px;
-    color:#222;
+    color:var(--text-dark);
     margin-bottom:25px;
-
 }
 
-
-
-/* Top bar */
+/* ---------- Top bar ---------- */
 
 .top-bar{
-
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:20px;
-
+    flex-wrap:wrap;
+    gap:15px;
 }
-
-
-/* Add Button */
 
 .add-btn{
-
-    background:#2563eb;
-    color:white;
+    background:var(--primary);
+    color:var(--surface);
     border:none;
-
     padding:12px 22px;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
     font-size:15px;
-
+    font-weight:600;
     cursor:pointer;
-
+    transition:var(--transition);
 }
-
 
 .add-btn:hover{
-
-    background:#1d4ed8;
-
+    background:var(--primary-hover);
+    box-shadow:var(--shadow-primary);
 }
-
-
-/* Search */
 
 #searchSupplier{
-
     width:320px;
-
+    max-width:100%;
     padding:12px 15px;
-
-    border:1px solid #ddd;
-
-    border-radius:8px;
-
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
     font-size:14px;
-
     outline:none;
-
+    transition:var(--transition);
 }
 
+#searchSupplier:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
+}
 
-
-/* Table */
+/* ---------- Suppliers table ---------- */
 
 .product-table{
-
     width:100%;
-
-    background:white;
-
+    background:var(--surface);
     border-collapse:collapse;
-
-    border-radius:12px;
-
+    border-radius:var(--radius-lg);
     overflow:hidden;
-
-    box-shadow:0 5px 20px rgba(0,0,0,0.08);
-
+    box-shadow:var(--shadow-md);
 }
-
-
 
 .product-table thead{
-
-    background:#1f2937;
-
+    background:var(--primary-dark);
 }
-
 
 .product-table th{
-
-    color:white;
-
+    color:var(--surface);
     padding:15px;
-
     text-align:left;
-
     font-size:14px;
-
+    font-weight:600;
 }
-
 
 .product-table td{
-
     padding:14px 15px;
-
-    border-bottom:1px solid #eee;
-
-    color:#333;
-
+    border-bottom:1px solid var(--border);
+    color:var(--text-dark);
     font-size:14px;
-
 }
 
-
+.product-table tbody tr{
+    transition:var(--transition);
+}
 
 .product-table tbody tr:hover{
-
-    background:#f8fafc;
-
+    background:var(--bg-alt);
 }
 
-
-
-/* Action buttons */
-
+.view-btn,
+.delete-btn{
+    border:none;
+    padding:8px 12px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    font-weight:600;
+    transition:var(--transition);
+}
 
 .view-btn{
-
-    background:#16a34a;
-
-    color:white;
-
-    border:none;
-
-    padding:8px 12px;
-
-    border-radius:6px;
-
-    cursor:pointer;
-
+    background:var(--success);
+    color:var(--surface);
 }
-
-
-.delete-btn{
-
-    background:#dc2626;
-
-    color:white;
-
-    border:none;
-
-    padding:8px 12px;
-
-    border-radius:6px;
-
-    cursor:pointer;
-
-}
-
 
 .view-btn:hover{
-
-    background:#15803d;
-
+    background:var(--success-dark);
 }
 
+.delete-btn{
+    background:var(--danger);
+    color:var(--surface);
+}
 
 .delete-btn:hover{
-
-    background:#b91c1c;
-
+    background:var(--danger-dark);
 }
 
-
-
-/* Modal */
-
-.modal{
-
-    display:none;
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,0.5);
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-
-.modal-box{
-
-    width:450px;
-
-    background:white;
-
-    padding:30px;
-
-    border-radius:12px;
-
-}
-
-
-.modal-box input,
-.modal-box textarea{
-
-    width:100%;
-
-    padding:12px;
-
-    margin-bottom:15px;
-
-    border:1px solid #ddd;
-
-    border-radius:7px;
-
-}
-
-
-
-.save-btn{
-
-    width:100%;
-
-    background:#2563eb;
-
-    color:white;
-
-    border:none;
-
-    padding:12px;
-
-    border-radius:7px;
-
-    cursor:pointer;
-
-}
-
-.purchase-table{
-
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-    background:white;
-
-}
-
-.purchase-table th{
-
-    background:#1f2937;
-    color:white;
-    padding:12px;
-
-}
-
-.purchase-table td{
-
-    padding:12px;
-    border-bottom:1px solid #ddd;
-    text-align:center;
-
-}
-
-.purchase-table tr:hover{
-
-    background:#f8f8f8;
-
-}
-
-.summary-box{
-
-    width:350px;
-    margin-left:auto;
-    text-align:right;
-
-}
-
-.summary-box h2{
-
-    color:red;
-
-}
-body{
-
-    margin:0;
-    padding:25px;
-    background:#f5f7fb;
-    font-family:Arial,sans-serif;
-
-}
+/* ================================
+   SUPPLIER DETAILS PAGE
+================================ */
 
 .details-container{
-
     max-width:1200px;
     margin:auto;
-    background:#fff;
+    background:var(--surface);
     padding:30px;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
 }
 
 .details-container h2{
-
     margin-bottom:20px;
-    color:#222;
-
+    color:var(--text-dark);
 }
 
-/* Supplier Information */
+/* Supplier info cards — each field gets its own accent */
 
 .info-grid{
-
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:15px;
     margin-bottom:30px;
-
 }
 
 .info-card{
-
-    background:#f8f9fa;
+    background:var(--bg-alt);
     padding:15px;
-    border-left:5px solid #2563eb;
-    border-radius:8px;
-
+    border-left:5px solid var(--primary);
+    border-radius:var(--radius-sm);
+    transition:var(--transition);
 }
 
+.info-card:hover{
+    background:var(--primary-light);
+}
+
+.info-card:nth-child(2){ border-left-color:var(--success); }
+.info-card:nth-child(3){ border-left-color:var(--warning); }
+.info-card:nth-child(4){ border-left-color:var(--info); }
+.info-card:nth-child(5){ border-left-color:var(--danger); }
+.info-card:nth-child(6){ border-left-color:var(--primary-dark); }
+
 .info-card label{
-
     font-size:13px;
-    color:#777;
+    color:var(--text-soft);
     display:block;
-
 }
 
 .info-card span{
-
     font-size:16px;
     font-weight:bold;
-    color:#222;
-
+    color:var(--text-dark);
 }
 
-/* Buttons */
+/* ---------- Top buttons ---------- */
 
 .top-buttons{
-
     display:flex;
     justify-content:flex-end;
     gap:10px;
     margin-bottom:20px;
-
-}
-
-.add-btn{
-
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:6px;
-    cursor:pointer;
-
 }
 
 .back-btn{
-
-    background:#6b7280;
-    color:white;
-    border:none;
+    background:var(--bg-alt);
+    color:var(--text-dark);
+    border:1px solid var(--border);
     padding:10px 18px;
-    border-radius:6px;
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
-}
-
-.add-btn:hover{
-
-    background:#1d4ed8;
-
+    font-weight:600;
+    transition:var(--transition);
 }
 
 .back-btn:hover{
-
-    background:#4b5563;
-
+    background:var(--border);
 }
 
-/* Purchase Table */
+/* ---------- Purchase history table ---------- */
 
 .purchase-table{
-
     width:100%;
     border-collapse:collapse;
     margin-top:20px;
-
+    background:var(--surface);
+    border-radius:var(--radius-md);
+    overflow:hidden;
 }
 
 .purchase-table th{
-
-    background:#1f2937;
-    color:white;
+    background:var(--primary-dark);
+    color:var(--surface);
     padding:12px;
-
+    text-align:left;
+    font-weight:600;
 }
 
 .purchase-table td{
-
     padding:12px;
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid var(--border);
     text-align:center;
+    color:var(--text-dark);
+}
 
+.purchase-table tr{
+    transition:var(--transition);
 }
 
 .purchase-table tr:hover{
-
-    background:#f8fafc;
-
+    background:var(--bg-alt);
 }
 
-/* Summary */
+/* ---------- Summary box ---------- */
 
 .summary-box{
-
     width:350px;
+    max-width:100%;
     margin-left:auto;
     margin-top:25px;
-    background:#f8f9fa;
+    background:var(--bg-alt);
     padding:20px;
-    border-radius:10px;
-
+    border-radius:var(--radius-md);
+    text-align:right;
 }
 
 .summary-box h3{
-
     margin:10px 0;
-
+    color:var(--text-dark);
 }
 
 .summary-box h2{
-
-    color:#dc2626;
-
+    color:var(--danger);
 }
 
-/* ==========================
+/* ================================
    DELETE CONFIRM POPUP
-========================== */
-
+================================ */
 
 .delete-modal{
-
     display:none;
-
     position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100%;
-
-    background:rgba(0,0,0,0.45);
-
+    inset:0;
+    background:rgba(15,23,42,.55);
     justify-content:center;
-
     align-items:center;
-
     z-index:9999;
-
 }
-
-
 
 .delete-box{
-
     width:380px;
-
-    background:white;
-
+    max-width:90%;
+    background:var(--surface);
     padding:30px;
-
-    border-radius:15px;
-
+    border-radius:var(--radius-lg);
     text-align:center;
-
-    box-shadow:0 10px 30px rgba(0,0,0,0.25);
-
-    animation:popupShow 0.3s ease;
-
+    box-shadow:var(--shadow-lg);
+    animation:popupShow .3s ease;
 }
-
-
 
 .delete-box h3{
-
-    color:#dc2626;
-
+    color:var(--danger);
     font-size:22px;
-
     margin-bottom:15px;
-
 }
-
-
 
 .delete-box p{
-
-    color:#555;
-
+    color:var(--text-muted);
     font-size:15px;
-
     margin-bottom:25px;
-
 }
-
-
-
 
 .delete-actions{
-
     display:flex;
-
     justify-content:center;
-
     gap:15px;
-
 }
-
-
-
-/* Cancel Button */
 
 .cancel-delete{
-
-    background:#6b7280;
-
-    color:white;
-
-    border:none;
-
+    background:var(--bg-alt);
+    color:var(--text-dark);
+    border:1px solid var(--border);
     padding:10px 25px;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
     font-size:14px;
-
+    transition:var(--transition);
 }
-
-
 
 .cancel-delete:hover{
-
-    background:#4b5563;
-
+    background:var(--border);
 }
-
-
-
-
-/* Delete Button */
 
 .confirm-delete{
-
-    background:#dc2626;
-
-    color:white;
-
+    background:var(--danger);
+    color:var(--surface);
     border:none;
-
     padding:10px 25px;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
     font-size:14px;
-
+    transition:var(--transition);
 }
-
-
 
 .confirm-delete:hover{
-
-    background:#b91c1c;
-
+    background:var(--danger-dark);
 }
 
-
-
-
-@keyframes popupShow{
-
-    from{
-
-        transform:scale(0.8);
-
-        opacity:0;
-
-    }
-
-    to{
-
-        transform:scale(1);
-
-        opacity:1;
-
-    }
-
-}
-
-/* ===========================
-   ADD PURCHASE POPUP
-=========================== */
+/* ================================
+   ADD / EDIT MODAL (supplier form + purchase form)
+================================ */
 
 .modal{
-
     display:none;
     position:fixed;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-
-    background:rgba(0,0,0,0.5);
-
+    inset:0;
+    background:rgba(15,23,42,.55);
     justify-content:center;
     align-items:center;
-
     z-index:9999;
-
 }
 
 .modal-box{
-
     width:450px;
-
-    background:#fff;
-
-    border-radius:12px;
-
-    padding:25px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,0.25);
-
+    max-width:90%;
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:30px;
+    box-shadow:var(--shadow-lg);
     position:relative;
-
     animation:popupShow .25s ease;
-
-}
-
-.close{
-
-    position:absolute;
-
-    right:20px;
-
-    top:15px;
-
-    font-size:28px;
-
-    cursor:pointer;
-
-    color:#dc2626;
-
-    font-weight:bold;
-
 }
 
 .modal-box h2{
-
     margin-bottom:20px;
-
     text-align:center;
-
-    color:#1f2937;
-
+    color:var(--text-dark);
 }
 
 .modal-box label{
-
     display:block;
-
     margin-top:12px;
-
     margin-bottom:6px;
-
     font-weight:bold;
-
-    color:#374151;
-
+    color:var(--text-dark);
 }
 
 .modal-box input,
-.modal-box select{
-
+.modal-box select,
+.modal-box textarea{
     width:100%;
-
-    padding:10px;
-
-    border:1px solid #d1d5db;
-
-    border-radius:8px;
-
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
     outline:none;
-
     box-sizing:border-box;
-
+    transition:var(--transition);
 }
 
 .modal-box input:focus,
-.modal-box select:focus{
+.modal-box select:focus,
+.modal-box textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
+}
 
-    border-color:#2563eb;
+.close{
+    position:absolute;
+    right:20px;
+    top:15px;
+    font-size:28px;
+    line-height:1;
+    cursor:pointer;
+    color:var(--text-muted);
+    font-weight:bold;
+    transition:var(--transition);
+}
 
+.close:hover{
+    color:var(--danger);
+}
+
+.save-btn{
+    width:100%;
+    background:var(--primary);
+    color:var(--surface);
+    border:none;
+    padding:12px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    font-weight:600;
+    margin-top:10px;
+    transition:var(--transition);
+}
+
+.save-btn:hover{
+    background:var(--primary-hover);
 }
 
 .bill-buttons{
-
     display:flex;
-
     justify-content:space-between;
-
+    gap:15px;
     margin-top:25px;
-
 }
 
 .bill-btn{
-
-    background:#2563eb;
-
-    color:#fff;
-
+    flex:1;
+    background:var(--primary);
+    color:var(--surface);
     border:none;
-
     padding:12px 25px;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
     font-weight:bold;
-
+    transition:var(--transition);
 }
 
 .bill-btn:hover{
-
-    background:#1d4ed8;
-
+    background:var(--primary-hover);
 }
 
 .cancel-btn{
-
-    background:#dc2626;
-
-    color:#fff;
-
+    flex:1;
+    background:var(--danger);
+    color:var(--surface);
     border:none;
-
     padding:12px 25px;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
     font-weight:bold;
-
+    transition:var(--transition);
 }
 
 .cancel-btn:hover{
-
-    background:#b91c1c;
-
+    background:var(--danger-dark);
 }
 
 @keyframes popupShow{
-
     from{
-
         transform:scale(.8);
         opacity:0;
-
     }
-
     to{
-
         transform:scale(1);
         opacity:1;
+    }
+}
 
+/* ---------- Responsive ---------- */
+
+@media(max-width:768px){
+    .top-bar{
+        flex-direction:column;
+        align-items:stretch;
     }
 
+    #searchSupplier{
+        width:100%;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .summary-box{
+        width:100%;
+    }
 }

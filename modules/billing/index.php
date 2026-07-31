@@ -10,8 +10,6 @@ require_once "../../config/database.php";
 $database = new Database();
 $pdo = $database->connect();
 
-session_start();
-
 
 if(!isset($_SESSION['invoice_no'])){
 

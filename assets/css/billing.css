@@ -1,382 +1,264 @@
+@import url("variables.css");
+
+/* =====================================================
+   BILLING / INVOICE
+===================================================== */
+
 .bill-container{
-
-    width: 800px;
-    margin: 30px auto;
-    background: white;
-    padding: 30px;
-
-    border-radius: 10px;
-
-    box-shadow: 0 0 15px rgba(0,0,0,0.15);
-
-    font-family: Arial, sans-serif;
-
+    width:800px;
+    max-width:95vw;
+    margin:30px auto;
+    background:var(--surface);
+    padding:30px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
+    font-family:'Poppins',Arial,sans-serif;
 }
 
-
-
-/* Shop Header */
+/* ---------- Shop Header ---------- */
 
 .shop-header{
-
     text-align:center;
-
+    padding-bottom:16px;
+    border-bottom:2px dashed var(--border);
+    margin-bottom:16px;
 }
-
 
 .shop-logo{
-
-    width:80px;
-    height:80px;
-
+    width:70px;
+    height:70px;
     object-fit:contain;
-
+    margin-bottom:6px;
 }
-
-
 
 .shop-header h1{
-
     margin:5px 0;
-
-    font-size:28px;
-
+    font-size:26px;
+    font-weight:700;
+    color:var(--primary-dark);
 }
-
 
 .shop-header h3{
-
     margin:5px;
-
-    color:#555;
-
+    color:var(--text-muted);
+    font-weight:500;
+    font-size:14px;
 }
-
 
 .shop-header p{
-
     margin:5px;
-
-    font-size:14px;
-
+    font-size:13px;
+    color:var(--text-muted);
 }
 
-
-
-
-
-/* Bill Info */
+/* ---------- Bill Info ---------- */
 
 .bill-info{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     margin:20px 0;
-
-    font-size:15px;
-
+    font-size:14px;
+    color:var(--text-dark);
 }
-
-
 
 .customer-input{
-
-    padding:8px;
-
-    border:1px solid #ccc;
-
-    border-radius:5px;
-
+    padding:9px 12px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    font-size:14px;
+    font-family:inherit;
+    transition:var(--transition);
 }
 
+.customer-input:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
+}
 
-
-
-
-/* Table */
+/* ---------- Table ---------- */
 
 .bill-table{
-
     width:100%;
-
     border-collapse:collapse;
-
     margin-top:20px;
-
+    border-radius:var(--radius-md);
+    overflow:hidden;
 }
-
-
 
 .bill-table th{
-
-    background:#222;
-
-    color:white;
-
+    background:var(--primary-dark);
+    color:var(--surface);
     padding:12px;
-
     text-align:center;
-
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.3px;
 }
-
-
 
 .bill-table td{
-
     padding:12px;
-
-    border-bottom:1px solid #ddd;
-
+    border-bottom:1px solid var(--border);
     text-align:center;
-
+    font-size:14px;
+    color:var(--text-dark);
 }
 
+.bill-table tr{ transition:var(--transition); }
+.bill-table tr:hover{ background:var(--bg-alt); }
 
-
-.bill-table tr:hover{
-
-    background:#f5f5f5;
-
-}
-
-
-
-
-/* Remove Button */
+/* ---------- Remove Button ---------- */
 
 .remove-btn{
-
     border:none;
-
-    background:#e74c3c;
-
-    color:white;
-
-    padding:6px 10px;
-
-    border-radius:5px;
-
+    background:var(--danger);
+    color:var(--surface);
+    padding:7px 12px;
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
+    font-size:13px;
+    transition:var(--transition);
 }
 
+.remove-btn:hover{ background:var(--danger-dark); }
 
-
-
-
-/* Summary */
+/* ---------- Summary ---------- */
 
 .summary{
-
     width:300px;
-
     margin-left:auto;
-
     margin-top:20px;
-
+    background:var(--bg);
+    padding:18px 20px;
+    border-radius:var(--radius-md);
 }
-
-
 
 .summary p{
-
     display:flex;
-
     justify-content:space-between;
-
+    font-size:14px;
+    color:var(--text-dark);
+    padding:4px 0;
 }
-
-
 
 .summary h3{
-
-    border-top:2px solid #222;
-
+    display:flex;
+    justify-content:space-between;
+    border-top:2px solid var(--primary-dark);
+    margin-top:10px;
     padding-top:15px;
-
-    font-size:22px;
-
+    font-size:21px;
+    font-weight:700;
+    color:var(--primary-dark);
 }
 
-
-
-
-/* Discount */
+/* ---------- Discount ---------- */
 
 #discount{
-
     width:100px;
-
-    padding:5px;
-
+    padding:7px 10px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    font-family:inherit;
 }
 
+#discount:focus{
+    outline:none;
+    border-color:var(--primary);
+}
 
-
-
-
-/* Buttons */
+/* ---------- Actions ---------- */
 
 .bill-actions{
-
     text-align:right;
-
     margin-top:25px;
-
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
 }
-
-
 
 .bill-actions button{
-
-    padding:12px 20px;
-
+    padding:12px 22px;
     border:none;
-
-    background:#0066ff;
-
-    color:white;
-
-    border-radius:6px;
-
+    background:var(--primary);
+    color:var(--surface);
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
-    font-size:15px;
-
+    font-size:14.5px;
+    font-weight:600;
+    transition:var(--transition);
 }
-
-
 
 .bill-actions button:hover{
-
-    background:#004dcc;
-
+    background:var(--primary-hover);
+    box-shadow:var(--shadow-primary);
 }
 
+.bill-actions button:active{ transform:translateY(1px); }
 
-
-
-
-
-/* PRINT STYLE */
+/* =====================================================
+   PRINT STYLE (receipt printing — kept intact)
+===================================================== */
 
 @media print{
 
+    body{ background:var(--surface); }
 
-body{
-
-    background:white;
-
-}
-
-
-.bill-container{
-
-    width:80mm;
-
-    margin:0;
-
-    padding:10px;
-
-    box-shadow:none;
-
-}
-
-
-
-.shop-logo{
-
-    display:none;
-
-}
-
-
-
-.shop-header h1{
-
-    font-size:18px;
-
-}
-
-
-
-.shop-header h3{
-
-    font-size:14px;
-
-}
-
-
-
-.bill-table th{
-
-    background:white;
-
-    color:black;
-
-}
-
-
-
-.remove-btn,
-.bill-actions,
-#discount{
-
-    display:none;
-
-}
-
-
-
-.bill-table th:last-child,
-.bill-table td:last-child{
-
-    display:none;
-
-}
-
-
-
-.bill-info{
-
-    display:block;
-
-}
-
-
-
-.summary{
-
-    width:100%;
-
-}
-
-
-}
-
-@media print {
-
-    body * {
-        visibility: hidden;
+    .bill-container{
+        width:80mm;
+        margin:0;
+        padding:10px;
+        box-shadow:none;
+        border-radius:0;
     }
+
+    .shop-logo{ display:none; }
+
+    .shop-header h1{ font-size:18px; }
+    .shop-header h3{ font-size:14px; }
+
+    .bill-table th{
+        background:var(--surface);
+        color:#000;
+    }
+
+    .remove-btn,
+    .bill-actions,
+    #discount{
+        display:none;
+    }
+
+    .bill-table th:last-child,
+    .bill-table td:last-child{
+        display:none;
+    }
+
+    .bill-info{ display:block; }
+
+    .summary{
+        width:100%;
+        background:none;
+        padding:10px 0;
+    }
+}
+
+/* Isolated receipt printing (only #billContainer visible) */
+
+@media print{
+
+    body *{ visibility:hidden; }
 
     #billContainer,
-    #billContainer * {
-        visibility: visible;
+    #billContainer *{ visibility:visible; }
+
+    #billContainer{
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
     }
 
-    #billContainer {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    .no-print {
-        display: none;
-    }
+    .no-print{ display:none; }
 }

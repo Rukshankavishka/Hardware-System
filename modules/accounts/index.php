@@ -125,50 +125,25 @@ $balance = $total_income - $total_expense;
 
     <div class="account-summary">
 
-
-        <div class="summary-box">
-
-            <h4>
-                Today's Income
-            </h4>
-
-            <h2>
-                Rs. <?= number_format($total_income,2); ?>
-            </h2>
-
-        </div>
-
-
-
-        <div class="summary-box">
-
-            <h4>
-                Today's Expense
-            </h4>
-
-            <h2>
-                Rs. <?= number_format($total_expense,2); ?>
-            </h2>
-
-        </div>
-
-
-
-        <div class="summary-box">
-
-            <h4>
-                Balance
-            </h4>
-
-            <h2>
-                Rs. <?= number_format($balance,2); ?>
-            </h2>
-
-        </div>
-
-
+    <div class="summary-box income">
+        <div class="icon-wrap"><i class="fa-solid fa-arrow-up"></i></div>
+        <h4>Today's Income</h4>
+        <h2>Rs. <?= number_format($total_income,2); ?></h2>
     </div>
 
+    <div class="summary-box expense">
+        <div class="icon-wrap"><i class="fa-solid fa-arrow-down"></i></div>
+        <h4>Today's Expense</h4>
+        <h2>Rs. <?= number_format($total_expense,2); ?></h2>
+    </div>
+
+    <div class="summary-box balance">
+        <div class="icon-wrap"><i class="fa-solid fa-wallet"></i></div>
+        <h4>Balance</h4>
+        <h2>Rs. <?= number_format($balance,2); ?></h2>
+    </div>
+
+</div>
 
     <br>
 

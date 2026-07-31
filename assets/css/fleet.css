@@ -1,501 +1,295 @@
-/* ==========================
-   FLEET MANAGEMENT CSS
-========================== */
+@import url("variables.css");
 
+/* =====================================================
+   FLEET MANAGEMENT
+===================================================== */
 
-.fleet-container{
-
-    background:white;
-
-    padding:25px;
-
-    margin:20px;
-
-    border-radius:12px;
-
-    box-shadow:0 5px 20px rgba(0,0,0,0.08);
-
-}
-
-
-
-/* Header */
+/* ---------- Page Header ---------- */
 
 .page-header{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
+    flex-wrap:wrap;
+    gap:15px;
     margin-bottom:25px;
-
+    background:var(--surface);
+    padding:20px 24px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);
+    border-left:4px solid var(--primary);
 }
-
 
 .page-header h2{
-
-    font-size:26px;
-
-    color:#1f2937;
-
+    font-size:24px;
+    color:var(--text-dark);
+    font-weight:700;
 }
 
+/* ---------- List Container ---------- */
 
+.fleet-container{
+    background:var(--surface);
+    padding:25px;
+    margin:20px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
+}
 
-/* Add Button */
+/* ---------- Add Button ---------- */
 
 .add-btn{
-
-    background:#2563eb;
-
-    color:white;
-
+    background:var(--primary);
+    color:var(--surface);
     padding:12px 20px;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
+    border:none;
     text-decoration:none;
-
-    font-weight:bold;
-
-    transition:.3s;
-
+    font-weight:600;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:var(--transition);
 }
-
 
 .add-btn:hover{
-
-    background:#1d4ed8;
-
+    background:var(--primary-hover);
+    box-shadow:var(--shadow-primary);
 }
 
+/* ---------- Search ---------- */
 
-
-/* Search */
-
-.search-box{
-
-    margin-bottom:20px;
-
-}
-
+.search-box{ margin-bottom:20px; }
 
 .search-box input{
-
     width:350px;
-
-    padding:12px;
-
-    border:1px solid #ddd;
-
-    border-radius:8px;
-
+    max-width:100%;
+    padding:12px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
     outline:none;
-
+    font-size:14px;
+    font-family:inherit;
+    transition:var(--transition);
 }
 
+.search-box input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
+}
 
-
-/* Table */
-
+/* ---------- Fleet Table ---------- */
 
 .fleet-table{
-
     width:100%;
-
     border-collapse:collapse;
-
     overflow:hidden;
-
 }
-
-
 
 .fleet-table th{
-
-    background:#111827;
-
-    color:white;
-
+    background:var(--primary-dark);
+    color:var(--surface);
     padding:14px;
-
     text-align:center;
-
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.3px;
 }
-
-
 
 .fleet-table td{
-
     padding:14px;
-
-    border-bottom:1px solid #eee;
-
+    border-bottom:1px solid var(--border);
     text-align:center;
-
-    color:#374151;
-
+    color:var(--text-dark);
+    font-size:14px;
 }
 
+.fleet-table tr{ transition:var(--transition); }
+.fleet-table tr:hover{ background:var(--bg); }
+.fleet-table tr:last-child td{ border-bottom:none; }
 
-
-.fleet-table tr:hover{
-
-    background:#f8fafc;
-
-}
-
-
-
-/* Status */
-
+/* ---------- Status Pills ---------- */
 
 .status{
-
-    padding:6px 12px;
-
-    border-radius:20px;
-
-    color:white;
-
-    font-size:13px;
-
-    font-weight:bold;
-
+    padding:6px 14px;
+    border-radius:999px;
+    color:var(--surface);
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.2px;
+    display:inline-block;
 }
 
+.available{ background:var(--success); }
+.delivery{ background:var(--primary); }
+.maintenance{ background:var(--danger); }
 
-
-.available{
-
-    background:#16a34a;
-
-}
-
-
-
-.delivery{
-
-    background:#2563eb;
-
-}
-
-
-
-.maintenance{
-
-    background:#dc2626;
-
-}
-
-
-
-/* Action Buttons */
-
+/* ---------- Action Buttons ---------- */
 
 .view-btn,
 .delete-btn{
-
-    padding:7px 12px;
-
-    border-radius:6px;
-
+    padding:8px 14px;
+    border-radius:var(--radius-sm);
     text-decoration:none;
-
     font-size:13px;
-
+    font-weight:600;
     margin:3px;
-
     display:inline-block;
-
+    transition:var(--transition);
+    border:none;
+    cursor:pointer;
 }
 
+.view-btn{ background:var(--success); color:var(--surface); }
+.view-btn:hover{ background:var(--success-dark); }
 
+.delete-btn{ background:var(--danger); color:var(--surface); }
+.delete-btn:hover{ background:var(--danger-dark); }
 
-.view-btn{
-
-    background:#16a34a;
-
-    color:white;
-
-}
-
-
-
-.view-btn:hover{
-
-    background:#15803d;
-
-}
-
-
-
-.delete-btn{
-
-    background:#dc2626;
-
-    color:white;
-
-}
-
-
-
-.delete-btn:hover{
-
-    background:#b91c1c;
-
-}
-
-
-
-/* Small Text */
+/* ---------- Small Text ---------- */
 
 small{
-
-    color:#6b7280;
-
+    color:var(--text-muted);
     font-size:12px;
-
 }
 
-
-
-/* Responsive */
-
+/* ---------- Responsive ---------- */
 
 @media(max-width:900px){
-
-
-.fleet-container{
-
-    overflow-x:auto;
-
+    .fleet-container{ overflow-x:auto; }
+    .fleet-table{ min-width:900px; }
+    .search-box input{ width:100%; }
 }
 
-
-.fleet-table{
-
-    min-width:900px;
-
-}
-
-
-.search-box input{
-
-    width:100%;
-
-}
-
-
-}
-
-/* =========================
-   VEHICLE POPUP
-========================= */
+/* =====================================================
+   VEHICLE ADD/EDIT MODAL
+===================================================== */
 
 .modal{
-
     display:none;
-
     position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100%;
-
-    background:rgba(0,0,0,0.5);
-
+    inset:0;
+    background:rgba(15,23,42,.55);
+    backdrop-filter:blur(2px);
     justify-content:center;
     align-items:center;
-
     z-index:9999;
-
 }
-
-
 
 .modal-box{
-
     width:500px;
-
+    max-width:92vw;
     max-height:90vh;
-
     overflow-y:auto;
-
-    background:white;
-
-    padding:25px;
-
-    border-radius:12px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-
-    animation:popup .3s ease;
-
+    background:var(--surface);
+    padding:26px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
+    animation:popup .25s ease;
+    position:relative;
 }
-
-
 
 .modal-box h2{
-
     text-align:center;
-
-    color:#1f2937;
-
+    color:var(--text-dark);
     margin-bottom:20px;
-
+    font-size:19px;
+    font-weight:700;
 }
-
-
 
 .close{
-
-    float:right;
-
-    font-size:28px;
-
-    color:#dc2626;
-
+    position:absolute;
+    right:18px;
+    top:14px;
+    font-size:26px;
+    line-height:1;
+    color:var(--text-muted);
     cursor:pointer;
-
-    font-weight:bold;
-
+    font-weight:600;
+    transition:var(--transition);
 }
 
-
+.close:hover{ color:var(--danger); }
 
 .modal-box label{
-
     display:block;
-
     margin-top:12px;
-
     margin-bottom:5px;
-
     font-weight:600;
-
+    font-size:13px;
+    color:var(--text-dark);
 }
-
-
 
 .modal-box input,
 .modal-box select,
 .modal-box textarea{
-
     width:100%;
-
-    padding:10px;
-
-    border:1px solid #d1d5db;
-
-    border-radius:8px;
-
+    padding:11px 14px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
     outline:none;
-
     box-sizing:border-box;
-
+    font-size:14px;
+    font-family:inherit;
+    transition:var(--transition);
 }
 
-
-
-.modal-box textarea{
-
-    height:80px;
-
-    resize:none;
-
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
 }
 
-
+.modal-box textarea{ height:80px; resize:none; }
 
 .save-btn{
-
     width:100%;
-
     margin-top:20px;
-
-    padding:12px;
-
-    background:#2563eb;
-
-    color:white;
-
+    padding:13px;
+    background:var(--primary);
+    color:var(--surface);
     border:none;
-
-    border-radius:8px;
-
+    border-radius:var(--radius-sm);
     cursor:pointer;
-
-    font-size:16px;
-
-    font-weight:bold;
-
+    font-size:15px;
+    font-weight:600;
+    transition:var(--transition);
 }
-
-
 
 .save-btn:hover{
-
-    background:#1d4ed8;
-
+    background:var(--primary-hover);
+    box-shadow:var(--shadow-primary);
 }
-
-
 
 @keyframes popup{
-
-    from{
-
-        transform:scale(.8);
-
-        opacity:0;
-
-    }
-
-    to{
-
-        transform:scale(1);
-
-        opacity:1;
-
-    }
-
+    from{ transform:scale(.9); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
 }
+
+/* =====================================================
+   VEHICLE VIEW CARD
+===================================================== */
 
 .vehicle-card{
-
-    background:white;
-
-    padding:20px;
-
+    background:var(--surface);
+    padding:22px;
     margin-bottom:20px;
-
-    border-radius:10px;
-
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
-
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
 }
-
 
 .vehicle-card h3{
-
-    color:#1f2937;
-
-    border-bottom:1px solid #ddd;
-
+    color:var(--text-dark);
+    border-bottom:2px solid var(--border);
     padding-bottom:10px;
-
+    margin-bottom:12px;
+    font-size:17px;
+    font-weight:700;
 }
 
-
 .vehicle-card p{
-
-    font-size:15px;
-
-    color:#374151;
-
+    font-size:14.5px;
+    color:var(--text-dark);
+    margin:8px 0;
 }

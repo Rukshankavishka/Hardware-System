@@ -1,5 +1,11 @@
+@import url("variables.css");
+
 /* ===== Google Font ===== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* =====================================================
+   BASE
+===================================================== */
 
 *{
     margin:0;
@@ -8,270 +14,345 @@
     font-family:'Poppins',sans-serif;
 }
 
+html{ scroll-behavior:smooth; }
+
 body{
-    background:#f5f7fb;
+    background:var(--bg);
+    color:var(--text-dark);
+    -webkit-font-smoothing:antialiased;
 }
 
-/* ===== Sidebar ===== */
+a{ color:inherit; }
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar{
-
     position:fixed;
     top:0;
     left:0;
-
     width:270px;
     height:100vh;
+    z-index:1000;
 
-    background:#0a3478;
+    background:linear-gradient(180deg, var(--primary-dark), var(--primary-darker));
 
-    padding:15px;
-
+    padding:22px 16px;
     display:flex;
     flex-direction:column;
 
-    box-shadow:4px 0 20px rgba(0,0,0,.08);
-
-    overflow:hidden;
-
-}
-/* ===== Logo ===== */
-
-.logo-section {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    gap: 20px; /* රූපය සහ අකුරු අතර පරතරය තබයි */
+    box-shadow:8px 0 30px rgba(0,0,0,.15);
+    transition:width var(--transition);
 }
 
-.logo-section img {
-    width: 80px; 
+/* ---- Logo ---- */
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    padding:8px 6px 22px 6px;
+    gap:16px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    margin-bottom:14px;
 }
 
-.main-title {
-    font-weight: bold;
-    font-size: 25px;
-    color: white;
-    font-style: italic;
-    display: block; /* මෙය අකුරු දෙක එකිනෙක උඩ සිටින ලෙස සකසයි */
+.logo-section img{
+    width:52px;
+    height:52px;
+    object-fit:contain;
+    border-radius:var(--radius-sm);
+    background:rgba(255,255,255,.08);
+    padding:6px;
 }
 
-.sub-title {
-    font-size: 13px;
-    color: #ddf031;
-    font-style: italic;
+.main-title{
+    font-weight:700;
+    font-size:19px;
+    color:var(--surface);
+    font-style:normal;
+    line-height:1.25;
+    display:block;
 }
 
+.sub-title{
+    font-size:12px;
+    color:#A5F3D0;
+    font-weight:500;
+    letter-spacing:.3px;
+}
 
-/* ===== Menu ===== */
+/* ---- Menu ---- */
 
 .menu{
-
     list-style:none;
-
     flex:1;
-
     overflow-y:auto;
-
-    margin-top:20px;
-
-    padding-right:5px;
-
+    margin-top:8px;
+    padding-right:4px;
 }
 
-.menu li{
-    margin-bottom:8px;
-}
+.menu li{ margin-bottom:4px; }
 
 .menu li a{
-    color:#cbd5e1;
+    position:relative;
+    color:var(--sidebar-text);
     text-decoration:none;
     display:flex;
     align-items:center;
-    gap:15px;
-    padding:13px 16px;
-    border-radius:12px;
-    transition:.3s;
-    font-size:15px;
+    gap:14px;
+    padding:12px 14px;
+    border-radius:var(--radius-sm);
+    transition:var(--transition);
+    font-size:14.5px;
+    font-weight:500;
 }
 
 .menu li a i{
-    width:22px;
+    width:20px;
     text-align:center;
-    font-size:18px;
+    font-size:17px;
 }
-
-/* Hover */
 
 .menu li a:hover{
-    background:#2563eb;
-    color:#fff;
-    transform:translateX(6px);
+    background:rgba(255,255,255,.08);
+    color:var(--surface);
+    padding-left:18px;
 }
 
-/* Active */
+/* Active — left accent bar instead of full jump */
 
 .menu li.active a{
-    background:#2563eb;
-    color:#fff;
-    box-shadow:0 8px 18px rgba(37,99,235,.35);
+    background:var(--primary);
+    color:var(--surface);
+    box-shadow:var(--shadow-primary);
 }
 
-/* Logout */
+.menu li.active a::before{
+    content:"";
+    position:absolute;
+    left:-16px;
+    top:50%;
+    transform:translateY(-50%);
+    width:4px;
+    height:22px;
+    background:var(--surface);
+    border-radius:0 4px 4px 0;
+}
+
+/* Section label (optional grouping, e.g. <li class="menu-label">Inventory</li>) */
+
+.menu-label{
+    color:var(--text-soft);
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:14px 14px 6px;
+}
+
+
+/* ---- Settings menu item (distinct accent, separate from other nav items) ---- */
+/* Add class="settings" to the Settings <li> in your sidebar HTML:
+   <li class="settings"><a href="settings.php"><i class="..."></i><span>Settings</span></a></li> */
+
+.menu li.settings a{
+    color:var(--sidebar-text);
+}
+
+.menu li.settings a:hover{
+    background:rgba(255,255,255,.08);
+    color:var(--warning);
+}
+
+.menu li.settings a i{
+    color:var(--warning);
+}
+
+.menu li.settings.active a{
+    background:var(--warning);
+    color:var(--surface);
+    box-shadow:0 8px 18px rgba(234,88,12,.35);
+}
+
+.menu li.settings.active a i{
+    color:var(--surface);
+}
+
+.menu li.settings.active a::before{
+    content:"";
+    position:absolute;
+    left:-16px;
+    top:50%;
+    transform:translateY(-50%);
+    width:4px;
+    height:22px;
+    background:var(--surface);
+    border-radius:0 4px 4px 0;
+}
+
+/* ---- Logout ---- */
 
 .logout{
-    margin-top:20px;
+    margin-top:8px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.12);
 }
 
 .logout a{
     display:flex;
     align-items:center;
-    gap:15px;
-    padding:13px 16px;
-    color:#ffb4b4;
+    gap:14px;
+    padding:12px 14px;
+    color:var(--sidebar-text-danger);
     text-decoration:none;
-    border-radius:12px;
-    transition:.3s;
+    border-radius:var(--radius-sm);
+    transition:var(--transition);
+    font-size:14.5px;
+    font-weight:500;
 }
 
 .logout a:hover{
-    background:#dc2626;
-    color:#fff;
+    background:var(--danger);
+    color:var(--surface);
 }
 
-/* ===== Content ===== */
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
 
 .main-content{
     margin-left:270px;
-    padding:30px;
+    min-height:100vh;
+    background:var(--bg);
+    transition:margin-left var(--transition);
 }
 
-/* ===== Responsive ===== */
+/* =====================================================
+   RESPONSIVE / COLLAPSE
+===================================================== */
 
 @media(max-width:992px){
 
-.sidebar{
+    .sidebar{ width:85px; }
 
-    width:85px;
+    .logo-section .main-title,
+    .logo-section .sub-title,
+    .menu li a span,
+    .menu-label,
+    .logout span{
+        display:none;
+    }
 
+    .main-content{ margin-left:85px; }
 }
 
-.logo-section h2,
-.menu li a span,
-.logout span{
+.sidebar.collapsed{ width:85px; }
 
-    display:none;
-
-}
-
-.main-content{
-
-    margin-left:85px;
-
-}
-/* ==========================
-   SIDEBAR COLLAPSE
-========================== */
-
-.sidebar{
-    transition:0.3s ease;
-}
-
-.sidebar.collapsed{
-    width:85px;
-}
-
-.sidebar.collapsed .logo-section h2,
+.sidebar.collapsed .logo-section .main-title,
+.sidebar.collapsed .logo-section .sub-title,
 .sidebar.collapsed .menu span,
+.sidebar.collapsed .menu-label,
 .sidebar.collapsed .logout span{
     display:none;
 }
 
 .sidebar.collapsed .logo-section img{
-    width:45px;
-    height:45px;
+    width:42px;
+    height:42px;
 }
 
-.main-content{
-    transition:0.3s ease;
-}
+.main-content.expanded{ margin-left:85px; }
 
-.main-content.expanded{
-    margin-left:85px;
-}
-
-}
-
-/*=====================================
-            TOP NAVBAR
-=====================================*/
-
-.main-content{
-    margin-left:270px;
-    min-height:100vh;
-    background:#f5f7fb;
-}
+/* =====================================================
+   TOP NAVBAR
+===================================================== */
 
 .top-navbar{
     width:100%;
-    height:75px;
-    background:#ffffff;
+    height:74px;
+    background:var(--primary-light);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:0 30px;
-    box-shadow:0 2px 15px rgba(0,0,0,0.08);
+    padding:0 28px;
+    box-shadow:var(--shadow-sm);
+    border-bottom:1px solid var(--border);
     position:sticky;
     top:0;
-    z-index:999;
+    z-index:900;
 }
 
 .navbar-left{
     display:flex;
     align-items:center;
-    gap:20px;
+    gap:18px;
 }
 
 .toggle-btn{
-    width:45px;
-    height:45px;
+    width:42px;
+    height:42px;
     border:none;
-    border-radius:10px;
-    background:#eef2ff;
-    color:#2563eb;
+    border-radius:var(--radius-md);
+    background:var(--primary-light);
+    color:var(--primary);
     cursor:pointer;
-    transition:0.3s;
-    font-size:18px;
+    transition:var(--transition);
+    font-size:17px;
 }
 
 .toggle-btn:hover{
-    background:#2563eb;
-    color:#fff;
+    background:var(--primary);
+    color:var(--surface);
+    box-shadow:var(--shadow-primary);
+    transform:translateY(-2px);
 }
 
 .page-title{
-    font-size:24px;
+    font-size:22px;
     font-weight:600;
-    color:#1e293b;
+    color:var(--text-dark);
+    position:relative;
+    padding-left:14px;
+}
+
+.page-title::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:4px;
+    height:22px;
+    background:linear-gradient(180deg,var(--primary),var(--info));
+    border-radius:4px;
 }
 
 .navbar-right{
     display:flex;
     align-items:center;
-    gap:20px;
+    gap:16px;
 }
 
 .search-box{
     display:flex;
     align-items:center;
-    background:#f1f5f9;
-    border-radius:10px;
-    padding:10px 15px;
-    width:300px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:10px 14px;
+    width:280px;
+    transition:var(--transition);
+}
+
+.search-box:focus-within{
+    background:var(--surface);
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
 }
 
 .search-box i{
-    color:#64748b;
+    color:var(--text-muted);
     margin-right:10px;
 }
 
@@ -281,22 +362,40 @@ body{
     background:transparent;
     width:100%;
     font-size:14px;
+    font-family:inherit;
+    color:var(--text-dark);
 }
 
 .icon-btn{
-    width:45px;
-    height:45px;
-    border:none;
-    border-radius:10px;
-    background:#f1f5f9;
+    position:relative;
+    width:42px;
+    height:42px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    background:var(--surface);
+    color:var(--text-muted);
     cursor:pointer;
-    transition:0.3s;
-    font-size:18px;
+    transition:var(--transition);
+    font-size:17px;
 }
 
 .icon-btn:hover{
-    background:#2563eb;
-    color:#fff;
+    background:var(--primary);
+    color:var(--surface);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-primary);
+}
+
+.icon-btn .dot{
+    position:absolute;
+    top:6px;
+    right:6px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--danger);
+    border:2px solid var(--surface);
+    box-shadow:0 0 0 2px var(--danger-light);
 }
 
 .profile{
@@ -304,42 +403,45 @@ body{
     align-items:center;
     gap:12px;
     cursor:pointer;
+    padding:6px 14px 6px 6px;
+    border-radius:var(--radius-md);
+    border:1px solid var(--border);
+    transition:var(--transition);
+    background:var(--surface);
+}
+
+.profile:hover{
+    background:var(--primary-light);
+    border-color:var(--primary);
 }
 
 .profile img{
-    width:45px;
-    height:45px;
+    width:42px;
+    height:42px;
     border-radius:50%;
     object-fit:cover;
-    border:2px solid #2563eb;
+    border:2px solid var(--primary);
+    padding:1px;
 }
 
 .profile h6{
     margin:0;
-    font-size:15px;
+    font-size:14.5px;
     font-weight:600;
-    color:#1e293b;
+    color:var(--text-dark);
 }
 
 .profile small{
-    color:#64748b;
+    color:var(--text-muted);
     font-size:12px;
 }
 
-.menu::-webkit-scrollbar{
+/* =====================================================
+   SCROLLBAR (sidebar menu)
+===================================================== */
 
-    width:5px;
-
-}
-
-
+.menu::-webkit-scrollbar{ width:5px; }
 .menu::-webkit-scrollbar-thumb{
-
-    background:#f3f4f5;
-
+    background:rgba(255,255,255,.18);
     border-radius:10px;
-
-}
-.menu::-webkit-scrollbar{
-    width:5px;
 }
