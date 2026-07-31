@@ -51,7 +51,7 @@ border:none;
 
     display:grid;
 
-    grid-template-columns:repeat(3,1 fr);
+    grid-template-columns:repeat(3,320px);
 
     gap:25px;
 
@@ -281,4 +281,25 @@ grid-template-columns:1fr;
 
 .stock-card::before{
     background:#06b6d4;
+}
+
+.month-filter button{
+
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:11px 22px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.month-filter button:hover{
+
+    background:#1d4ed8;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,.25);
+
 }

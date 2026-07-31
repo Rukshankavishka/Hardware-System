@@ -98,6 +98,77 @@ $stock = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $totalStockValue = $stock['stock_value'] ?? 0;
 
+
+$stmt = $pdo->prepare("
+SELECT
+DAY(created_at) AS day,
+SUM(total_amount) AS sales
+FROM invoices
+WHERE MONTH(created_at)=?
+AND YEAR(created_at)=?
+AND status='completed'
+GROUP BY DAY(created_at)
+ORDER BY DAY(created_at)
+");
+
+$stmt->execute([$month,$year]);
+
+$labels = [];
+$data = [];
+
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    $labels[] = $row['day'];
+    $data[]   = $row['sales'];
+}
+
+// Income & Expense
+
+$stmt = $pdo->prepare("
+SELECT
+type,
+SUM(amount) AS total
+FROM transactions
+WHERE MONTH(transaction_date)=?
+AND YEAR(transaction_date)=?
+GROUP BY type
+");
+
+$stmt->execute([$month,$year]);
+
+$totalIncomeChart = 0;
+$totalExpenseChart = 0;
+
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+    if($row['type'] == 'IN'){
+        $totalIncomeChart = $row['total'];
+    }
+
+    if($row['type'] == 'OUT'){
+        $totalExpenseChart = $row['total'];
+    }
+
+}
+
+// Stock Status
+
+$inStock = $pdo->query("
+SELECT COUNT(*) FROM products
+WHERE stock_qty > 10
+")->fetchColumn();
+
+$lowStock = $pdo->query("
+SELECT COUNT(*) FROM products
+WHERE stock_qty > 0
+AND stock_qty <= 10
+")->fetchColumn();
+
+$outStock = $pdo->query("
+SELECT COUNT(*) FROM products
+WHERE stock_qty = 0
+")->fetchColumn();
+
+
 require_once "../../includes/header.php";
 require_once "../../includes/sidebar.php";
 require_once "../../includes/navbar.php";
@@ -140,7 +211,10 @@ require_once "../../includes/navbar.php";
                 ?>
             </select>
 
-            <button type="submit">View Report</button>
+              <button type="submit">
+                <i class="fa-solid fa-chart-column"></i>
+                View Report
+            </button>
 
         </form>
 
@@ -215,12 +289,14 @@ const ctx = document.getElementById('salesChart');
 new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-        datasets: [{
-            label: 'Monthly Sales',
-            data: [50000, 75000, 45000, 90000],
-            borderWidth: 3,
-            tension: 0.4
+        labels: <?= json_encode($labels); ?>,
+
+        datasets:[{
+            label:'Daily Sales',
+            data: <?= json_encode($data); ?>,
+            borderWidth:3,
+            tension:0.4,
+            fill:false
         }]
     },
     options: {
@@ -231,37 +307,89 @@ new Chart(ctx, {
 
 // Income vs Expense Bar Chart
 const incomeCtx = document.getElementById('incomeChart');
-new Chart(incomeCtx, {
-    type: 'bar',
-    data: {
-        labels: ['Income', 'Expense'],
-        datasets: [{
-            label: 'Amount',
-            data: [250000, 80000],
-            borderWidth: 1
+
+new Chart(incomeCtx,{
+
+    type:'bar',
+
+    data:{
+
+        labels:['Income','Expense'],
+
+        datasets:[{
+
+            label:'Amount',
+
+            data:[
+                <?= $totalIncomeChart; ?>,
+                <?= $totalExpenseChart; ?>
+            ],
+
+            borderWidth:1
+
         }]
+
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false
+
     }
+
 });
 
 // Stock Status Pie Chart
 const stockCtx = document.getElementById('stockChart');
-new Chart(stockCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['In Stock', 'Low Stock', 'Out Of Stock'],
-        datasets: [{
-            data: [80, 15, 5],
-            borderWidth: 1
+
+new Chart(stockCtx,{
+
+    type:'doughnut',
+
+    data:{
+
+        labels:[
+            'In Stock',
+            'Low Stock',
+            'Out Of Stock'
+        ],
+
+        datasets:[{
+
+            data:[
+                <?= $inStock; ?>,
+                <?= $lowStock; ?>,
+                <?= $outStock; ?>
+            ],
+
+            backgroundColor:[
+                '#22c55e',
+                '#f59e0b',
+                '#ef4444'
+            ],
+
+            borderWidth:2
+
         }]
+
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                position:'bottom'
+            }
+        }
+
     }
+
 });
 
 </script>
