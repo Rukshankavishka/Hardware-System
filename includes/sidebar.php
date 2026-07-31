@@ -90,8 +90,8 @@
             </a>
         </li>
 
-        <li>
-            <a href="#">
+        <li class="<?= ($page == 'settings') ? 'active' : ''; ?>">
+                <a href="/hardware_system/modules/settings/index.php">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
@@ -101,7 +101,7 @@
 
     <!-- Logout -->
     <div class="logout">
-        <a href="/hardware-system/logout.php">
+        <a href="/hardware_system/logout.php">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Logout</span>
         </a>

@@ -1,5 +1,7 @@
 <?php
 
+require_once '../../includes/auth.php';
+
 $page = "customers";
 
 require_once '../../includes/header.php';

@@ -1,5 +1,7 @@
 <?php
 
+require_once '../../includes/auth.php';
+
 $page = "reports";
 
 require_once "../../config/database.php";

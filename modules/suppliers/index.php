@@ -1,5 +1,8 @@
 <?php
 
+
+require_once '../../includes/auth.php';
+
 $page = "suppliers";
 
 require_once '../../includes/header.php';
