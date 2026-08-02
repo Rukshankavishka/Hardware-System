@@ -5,11 +5,27 @@ require_once "../../config/database.php";
 $database = new Database();
 $pdo = $database->connect();
 
-$purchase_id = $_POST['purchase_id'] ?? null;
+$purchase_id    = $_POST['purchase_id'] ?? null;
 $payment_amount = $_POST['payment_amount'] ?? null;
+$payment_method = $_POST['payment_method'] ?? 'Cash';
+$cheque_no      = $_POST['cheque_no'] ?? null;
+$cheque_bank    = $_POST['cheque_bank'] ?? null;
+$cheque_date    = $_POST['cheque_date'] ?? null;
 
 if(!$purchase_id || !$payment_amount || $payment_amount <= 0){
     die("Invalid payment data");
+}
+
+// Cheque select කළොත් cheque details ටික compulsory කරන්න
+if($payment_method === 'Cheque'){
+    if(!$cheque_no || !$cheque_bank || !$cheque_date){
+        die("Cheque details are required for cheque payments");
+    }
+} else {
+    // Cash නම් cheque fields null කරලා දාන්න (junk data DB එකට යන්නේ නැති වෙන්න)
+    $cheque_no = null;
+    $cheque_bank = null;
+    $cheque_date = null;
 }
 
 try{
@@ -66,7 +82,10 @@ try{
             reference_id,
             description,
             amount,
-            payment_method
+            payment_method,
+            cheque_no,
+            cheque_bank,
+            cheque_date
         )
         VALUES
         (
@@ -77,13 +96,20 @@ try{
             :reference_id,
             'Supplier Payment',
             :amount,
-            'Cash'
+            :payment_method,
+            :cheque_no,
+            :cheque_bank,
+            :cheque_date
         )
     ");
 
     $stmt->execute([
         ":reference_id"=>$purchase_id,
-        ":amount"=>$payment_amount
+        ":amount"=>$payment_amount,
+        ":payment_method"=>$payment_method,
+        ":cheque_no"=>$cheque_no,
+        ":cheque_bank"=>$cheque_bank,
+        ":cheque_date"=>$cheque_date
     ]);
 
     $pdo->commit();

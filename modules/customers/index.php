@@ -53,7 +53,6 @@ if(isset($_POST['update_credit'])){
 
 if(isset($_POST['payment_save'])){
 
-
     $id = $_POST['customer_id'];
 
     $payment = $_POST['payment_amount'];
@@ -92,7 +91,11 @@ if(isset($_POST['payment_save'])){
 
 
 
-    header("Location:index.php");
+    echo "<script>
+            alert('Payment Saved Successfully!');
+            window.location='index.php';
+          </script>";
+
     exit;
 
 }
@@ -124,7 +127,11 @@ if(isset($_POST['save'])){
     ]);
 
 
-    header("Location: index.php");
+    echo "<script>
+            alert('Customer Saved Successfully!');
+            window.location='index.php';
+          </script>";
+
     exit;
 
 }
@@ -564,4 +571,3 @@ $customers = $conn->query(
 
 
 <?php require_once '../../includes/footer.php'; ?>
-

@@ -1,5 +1,7 @@
 <?php
 
+require_once '../../includes/auth.php';
+
 $page = "employees";
 
 require_once '../../includes/header.php';
@@ -15,7 +17,7 @@ $pdo = $database->connect();
 
 
 
-$id = $_GET['id'];
+$id = $_GET['id'] ?? '';
 
 
 // Employee Details
@@ -35,6 +37,23 @@ $stmt->execute([
 $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
+// If no employee found, show a clean message instead of PHP warnings
+
+if(!$employee){
+    ?>
+    <link rel="stylesheet" href="../../assets/css/employees.css">
+
+    <div class="employee-container">
+        <div class="page-header">
+            <h2>⚠️ Employee Not Found</h2>
+            <a href="index.php" class="back-btn">← Back</a>
+        </div>
+    </div>
+
+    <?php
+    require_once '../../includes/footer.php';
+    exit();
+}
 
 
 // Attendance Summary
@@ -148,7 +167,7 @@ $salaries = $salary->fetchAll(PDO::FETCH_ASSOC);
 
         <h2>👨‍💼 Employee Details</h2>
 
-        <a href="index.php" class="delete-btn"> ← Back</a>
+        <a href="index.php" class="back-btn">← Back</a>
 
     </div>
 
@@ -156,15 +175,15 @@ $salaries = $salary->fetchAll(PDO::FETCH_ASSOC);
 
         <h3>Personal Details</h3>
 
-        <p><b>Employee Code :</b><?= $employee['employee_code']; ?></p>
+        <p><b>Employee Code :</b> <?= $employee['employee_code']; ?></p>
 
-        <p><b>Name :</b><?= $employee['name']; ?></p>
+        <p><b>Name :</b> <?= $employee['name']; ?></p>
 
-        <p><b>NIC :</b><?= $employee['nic']; ?></p>
+        <p><b>NIC :</b> <?= $employee['nic']; ?></p>
 
-        <p><b>Phone :</b><?= $employee['phone']; ?></p>
+        <p><b>Phone :</b> <?= $employee['phone']; ?></p>
 
-        <p><b>Position :</b><?= $employee['position']; ?></p>
+        <p><b>Position :</b> <?= $employee['position']; ?></p>
 
         <p><b>Basic Salary :</b> Rs. <?= number_format($employee['basic_salary'],2); ?></p>
 
@@ -178,9 +197,9 @@ $salaries = $salary->fetchAll(PDO::FETCH_ASSOC);
             <h3>
                 📅 Attendance History
             </h3>
-            <a href="attendance.php?employee_id=<?= $employee['employee_id']; ?>"class="add-btn">
+            <button class="add-btn" onclick="openAddAttendanceModal()">
                 + Add Attendance
-            </a>
+            </button>
         </div>
 
         <table class="employee-table">
@@ -251,7 +270,7 @@ $salaries = $salary->fetchAll(PDO::FETCH_ASSOC);
      <br>
 
     <div class="employee-card">
-        
+
         <div class="page-header">
             <h3>
                 💰 Advance History
@@ -261,7 +280,7 @@ $salaries = $salary->fetchAll(PDO::FETCH_ASSOC);
                 + Add Advance
             </button>
         </div>
-        
+
 
         <table class="employee-table">
 
@@ -342,6 +361,183 @@ $salaries = $salary->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
 </div>
+<div id="addAttendanceModal" class="modal">
+
+<div class="modal-box">
+
+<span class="close" onclick="closeAddAttendanceModal()">
+&times;
+</span>
+
+<h2>📅 Add Attendance</h2>
+
+<form action="save_attendance.php" method="POST">
+
+<input type="hidden"
+name="employee_id"
+value="<?= $employee['employee_id']; ?>">
+
+<label>
+Attendance Date
+</label>
+
+<input type="date"
+name="attendance_date"
+value="<?= date('Y-m-d'); ?>"
+required>
+
+<label>
+Status
+</label>
+
+<select name="status" required>
+
+<option value="Present">Present</option>
+<option value="Absent">Absent</option>
+<option value="Leave">Leave</option>
+<option value="Half Day">Half Day</option>
+
+</select>
+
+<button type="submit" class="save-btn">
+
+Save Attendance
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<div id="addAttendanceModal" class="modal">
+
+<div class="modal-box">
+
+<span class="close" onclick="closeAddAttendanceModal()">
+&times;
+</span>
+
+<h2>📅 Add Attendance</h2>
+
+<form action="save_attendance.php" method="POST">
+
+<input type="hidden"
+name="employee_id"
+value="<?= $employee['employee_id']; ?>">
+
+<label>
+Attendance Date
+</label>
+
+<input type="date"
+name="attendance_date"
+value="<?= date('Y-m-d'); ?>"
+required>
+
+<label>
+Status
+</label>
+
+<select name="status" required>
+
+<option value="Present">Present</option>
+<option value="Absent">Absent</option>
+<option value="Leave">Leave</option>
+<option value="Half Day">Half Day</option>
+
+</select>
+
+<button type="submit" class="save-btn">
+
+Save Attendance
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<div id="attendanceModal" class="modal">
+
+<div class="modal-box">
+
+<span class="close" onclick="closeAttendanceModal()">
+&times;
+</span>
+
+<h2>📅 Attendance History</h2>
+
+<table class="employee-table">
+
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php
+        if(count($attendance_data)>0){
+        foreach($attendance_data as $row){
+
+        ?>
+    <tr>
+        <td>
+            <?= date("d-m-Y",strtotime($row['attendance_date'])); ?>
+        </td>
+        <td>
+            <?php
+            if($row['status']=="Present"){
+            echo "<span class='present'>✅ Present</span>";
+            }
+            elseif($row['status']=="Absent"){
+            echo "<span class='absent'>❌ Absent</span>";
+            }
+            elseif($row['status']=="Leave"){
+            echo "<span class='leave'>🟢 Leave</span>";
+            }
+            else{
+            echo "<span class='halfday'>🟡 Half Day</span>";
+            }
+
+            ?>
+        </td>
+
+    </tr>
+    <?php
+    }
+    }else{
+    ?>
+
+    <tr>
+
+    <td colspan="2">
+
+    No Attendance Records Found
+
+    </td>
+
+    </tr>
+
+    <?php
+
+    }
+
+    ?>
+
+    </tbody>
+
+</table>
+
+</div>
+
+</div>
+
 <div id="advanceModal" class="modal">
 
 
@@ -522,6 +718,19 @@ Save Salary
 
 </div>
     <script>
+
+        function openAddAttendanceModal(){
+
+        document.getElementById("addAttendanceModal").style.display="flex";
+
+        }
+
+
+        function closeAddAttendanceModal(){
+
+        document.getElementById("addAttendanceModal").style.display="none";
+
+        }
 
         function openAdvanceModal(){
 

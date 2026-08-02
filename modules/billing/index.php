@@ -74,11 +74,9 @@ $grand_total = $subtotal - $discount;
 
         <div class="shop-header">
 
-            <img src="../../assets/images/logo.png" class="shop-logo">
-
-
             <h1>
-                THISARU HARDWARE
+                <img src="../../assets/images/logo.png" class="shop-logo">
+                THISARU 
             </h1>
 
             <h3>

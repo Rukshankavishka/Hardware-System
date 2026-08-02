@@ -93,7 +93,7 @@
          <li  class="<?= ($page == 'settings') ? 'active' : ''; ?>">
             <a href="/hardware_system/modules/settings/index.php">
                 <i class="fa-solid fa-gear"></i>
-                <span>Reports</span>
+                <span>Settings</span>
             </a>
         </li>
 

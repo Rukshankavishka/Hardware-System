@@ -343,3 +343,369 @@
 .attendance-card .save-btn:hover{
     transform:translateY(-2px);
 }
+
+@import url("variables.css");
+
+/* =====================================================
+   EMPLOYEE MANAGEMENT
+===================================================== */
+
+/* ---------- Page Header ---------- */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-bottom:25px;
+    background:var(--surface);
+    padding:20px 24px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);
+    border-left:4px solid var(--primary);
+}
+
+.page-header h2{
+    color:var(--text-dark);
+    font-size:24px;
+    font-weight:700;
+}
+
+/* ---------- List Container ---------- */
+
+.employee-container{
+    background:var(--surface);
+    padding:25px;
+    margin:20px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
+}
+
+/* ---------- Add Button ---------- */
+
+.add-btn{
+    background:var(--primary);
+    color:var(--surface);
+    padding:12px 20px;
+    border:none;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    text-decoration:none;
+    font-weight:600;
+    font-size:14.5px;
+    transition:var(--transition);
+}
+
+.add-btn:hover{
+    background:var(--primary-hover);
+    box-shadow:var(--shadow-primary);
+}
+
+/* ---------- Search ---------- */
+
+.search-box{ margin-bottom:20px; }
+
+.search-box input{
+    width:350px;
+    max-width:100%;
+    padding:12px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    outline:none;
+    font-size:14px;
+    font-family:inherit;
+    transition:var(--transition);
+}
+
+.search-box input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
+}
+
+/* ---------- Employee Table ---------- */
+
+.employee-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.employee-table th{
+    background:var(--primary-dark);
+    color:var(--surface);
+    padding:14px;
+    text-align:center;
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+}
+
+.employee-table td{
+    padding:14px;
+    border-bottom:1px solid var(--border);
+    text-align:center;
+    color:var(--text-dark);
+    font-size:14px;
+}
+
+.employee-table tr{ transition:var(--transition); }
+.employee-table tr:hover{ background:var(--bg); }
+.employee-table tr:last-child td{ border-bottom:none; }
+
+/* ---------- Status Pills ---------- */
+
+.active-status,
+.inactive-status{
+    padding:6px 14px;
+    border-radius:999px;
+    color:var(--surface);
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.2px;
+}
+
+.active-status{ background:var(--success); }
+.inactive-status{ background:var(--danger); }
+
+/* ---------- Action Buttons ---------- */
+
+.view-btn,
+.delete-btn{
+    padding:8px 14px;
+    border-radius:var(--radius-sm);
+    text-decoration:none;
+    color:var(--surface);
+    font-size:13px;
+    font-weight:600;
+    display:inline-block;
+    margin:3px;
+    transition:var(--transition);
+    border:none;
+    cursor:pointer;
+}
+
+.view-btn{ background:var(--success); }
+.view-btn:hover{ background:var(--success-dark); }
+
+.delete-btn{ background:var(--danger); }
+.delete-btn:hover{ background:var(--danger-dark); }
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:900px){
+    .employee-container{ overflow-x:auto; }
+    .employee-table{ min-width:900px; }
+    .search-box input{ width:100%; }
+}
+
+/* =====================================================
+   EMPLOYEE ADD/EDIT MODAL
+===================================================== */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.55);
+    backdrop-filter:blur(2px);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-box{
+    width:500px;
+    max-width:92vw;
+    max-height:90vh;
+    overflow-y:auto;
+    background:var(--surface);
+    padding:26px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
+    position:relative;
+}
+
+.modal-box h2{
+    text-align:center;
+    color:var(--text-dark);
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:16px;
+}
+
+.close{
+    position:absolute;
+    right:18px;
+    top:14px;
+    font-size:26px;
+    line-height:1;
+    color:var(--text-muted);
+    cursor:pointer;
+    transition:var(--transition);
+}
+
+.close:hover{ color:var(--danger); }
+
+.modal-box label{
+    display:block;
+    margin-top:12px;
+    margin-bottom:4px;
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-dark);
+}
+
+.modal-box input,
+.modal-box select,
+.modal-box textarea{
+    width:100%;
+    padding:11px 14px;
+    margin-top:2px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    box-sizing:border-box;
+    font-size:14px;
+    font-family:inherit;
+    transition:var(--transition);
+}
+
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-light);
+}
+
+.modal-box textarea{ height:80px; resize:none; }
+
+.save-btn{
+    width:100%;
+    margin-top:20px;
+    padding:13px;
+    background:var(--primary);
+    color:var(--surface);
+    border:none;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:var(--transition);
+}
+
+.save-btn:hover{
+    background:var(--primary-hover);
+    box-shadow:var(--shadow-primary);
+}
+
+/* =====================================================
+   EMPLOYEE VIEW PAGE (profile + history)
+===================================================== */
+
+.employee-card{
+    background:var(--surface);
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
+}
+
+.employee-card h3{
+    color:var(--text-dark);
+    border-bottom:2px solid var(--border);
+    padding-bottom:10px;
+    margin-bottom:15px;
+    font-size:17px;
+    font-weight:700;
+}
+
+.employee-card p{
+    font-size:14.5px;
+    color:var(--text-dark);
+    margin:10px 0;
+}
+
+.employee-card b{ color:var(--text-darker); }
+
+.employee-card .employee-table{ margin-top:15px; }
+
+/* ---------- Attendance status text (history table) ---------- */
+
+.present{ color:var(--success); font-weight:700; }
+.absent{ color:var(--danger); font-weight:700; }
+.leave{ color:var(--primary); font-weight:700; }
+.halfday{ color:var(--warning-dark); font-weight:700; }
+
+
+/* ---------- Neutral back link (was reusing .delete-btn, which is red/danger) ---------- */
+
+.back-btn{
+    padding:8px 14px;
+    border-radius:var(--radius-sm);
+    text-decoration:none;
+    color:var(--text-dark);
+    background:var(--bg-alt);
+    border:1px solid var(--border);
+    font-size:13px;
+    font-weight:600;
+    display:inline-block;
+    transition:var(--transition);
+}
+
+.back-btn:hover{
+    background:var(--border);
+}
+
+/* =====================================================
+   ATTENDANCE ENTRY FORM (separate class — was clashing
+   with .employee-card before)
+===================================================== */
+
+.attendance-card{
+    max-width:700px;
+    margin:auto;
+    background:var(--surface);
+    padding:30px;
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow-lg);
+}
+
+.attendance-card form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.attendance-card label{
+    font-weight:600;
+    color:var(--text-dark);
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.attendance-card input,
+.attendance-card select{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    font-size:14.5px;
+    outline:none;
+    transition:var(--transition);
+    box-sizing:border-box;
+}
+
+.attendance-card input:focus,
+.attendance-card select:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px var(--primary-light);
+}
+
+.attendance-card .save-btn{
+    margin-top:10px;
+}
+
+.attendance-card .save-btn:hover{
+    transform:translateY(-2px);
+}

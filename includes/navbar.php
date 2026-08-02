@@ -14,25 +14,4 @@
 
         </div>
 
-        <div class="navbar-right">
-
-            <button class="icon-btn">
-                <i class="fa-regular fa-bell"></i>
-            </button>
-
-            <div class="profile">
-
-                <img src="/hardware_System/assets/images/user.png" alt="User">
-
-                <div>
-
-                    <h6>Admin</h6>
-                    <small>Owner</small>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>

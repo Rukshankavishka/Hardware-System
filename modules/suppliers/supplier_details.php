@@ -58,6 +58,23 @@ foreach($purchases as $row){
 
 }
 
+/* All payments related to this supplier's purchases (used by View modal) */
+
+$stmt = $pdo->prepare("
+    SELECT t.*
+    FROM transactions t
+    INNER JOIN purchase_history p ON t.reference_id = p.purchase_id
+    WHERE p.supplier_id = :supplier_id
+    AND t.reference_type = 'Purchase'
+    ORDER BY t.transaction_date DESC, t.transaction_id DESC
+");
+
+$stmt->execute([
+    ":supplier_id" => $id
+]);
+
+$payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -162,9 +179,15 @@ foreach($purchases as $row){
             <td>Rs. <?= number_format($row['balance'],2); ?></td>
 
             <td>
+
                 <button class="payment-btn" onclick="openPaymentModal( <?= $row['purchase_id']; ?>, <?= $row['balance']; ?> )">
                     💰 Payment
                 </button>
+
+                <button class="view-btn" onclick="openViewModal( <?= $row['purchase_id']; ?> )">
+                    👁 View
+                </button>
+
             </td>
         </tr>
 
@@ -286,6 +309,32 @@ foreach($purchases as $row){
             name="payment_amount"
             required>
 
+            <label>Payment Method</label>
+
+            <select
+            name="payment_method"
+            id="paymentMethod"
+            onchange="togglePaymentFields()"
+            required>
+
+                <option value="Cash">Cash</option>
+                <option value="Cheque">Cheque</option>
+
+            </select>
+
+            <div id="chequeFields" style="display:none;">
+
+                <label>Cheque No</label>
+                <input type="text" name="cheque_no" id="chequeNo">
+
+                <label>Bank</label>
+                <input type="text" name="cheque_bank" id="chequeBank">
+
+                <label>Cheque Date</label>
+                <input type="date" name="cheque_date" id="chequeDate">
+
+            </div>
+
             <br><br>
 
             <button
@@ -302,7 +351,30 @@ foreach($purchases as $row){
 
 </div>
 
+<div id="viewModal" class="modal">
+
+    <div class="modal-box">
+
+        <span class="close"
+        onclick="closeViewModal()">
+
+        &times;
+
+        </span>
+
+        <h2>Payment Details</h2>
+
+        <div id="viewModalBody">
+            <!-- JS එකෙන් fill වෙනවා -->
+        </div>
+
+    </div>
+
+</div>
+
 <script>
+
+    const allPayments = <?= json_encode($payments); ?>;
 
     function openPurchaseModal(){
 
@@ -324,11 +396,82 @@ foreach($purchases as $row){
 
     document.getElementById("paymentModal").style.display="flex";
 
+    togglePaymentFields();
+
     }
 
     function closePaymentModal(){
 
         document.getElementById("paymentModal").style.display="none";
+
+    }
+
+    function togglePaymentFields(){
+
+        const method = document.getElementById("paymentMethod").value;
+        const chequeFields = document.getElementById("chequeFields");
+        const chequeNo = document.getElementById("chequeNo");
+        const chequeBank = document.getElementById("chequeBank");
+        const chequeDate = document.getElementById("chequeDate");
+
+        if(method === "Cheque"){
+            chequeFields.style.display = "block";
+            chequeNo.required = true;
+            chequeBank.required = true;
+            chequeDate.required = true;
+        } else {
+            chequeFields.style.display = "none";
+            chequeNo.required = false;
+            chequeBank.required = false;
+            chequeDate.required = false;
+        }
+
+    }
+
+    function openViewModal(purchaseId){
+
+        const modalBody = document.getElementById("viewModalBody");
+
+        const rows = allPayments.filter(p => p.reference_id == purchaseId);
+
+        if(rows.length === 0){
+
+            modalBody.innerHTML = "<p>No payments recorded for this purchase yet.</p>";
+
+        } else {
+
+            let html = "";
+
+            rows.forEach(pay => {
+
+                html += `<div class="payment-detail-card">`;
+                html += `<p><strong>Date:</strong> ${pay.transaction_date}</p>`;
+                html += `<p><strong>Amount:</strong> Rs. ${parseFloat(pay.amount).toFixed(2)}</p>`;
+
+                if(pay.payment_method === "Cheque"){
+                    html += `<p><strong>Method:</strong> 🏦 Cheque</p>`;
+                    html += `<p><strong>Cheque No:</strong> ${pay.cheque_no ?? '-'}</p>`;
+                    html += `<p><strong>Bank:</strong> ${pay.cheque_bank ?? '-'}</p>`;
+                    html += `<p><strong>Cheque Date:</strong> ${pay.cheque_date ?? '-'}</p>`;
+                } else {
+                    html += `<p><strong>Method:</strong> 💵 Cash</p>`;
+                }
+
+                html += `</div><hr>`;
+
+            });
+
+            modalBody.innerHTML = html;
+
+        }
+
+        document.getElementById("viewModal").style.display = "flex";
+
+    }
+
+    function closeViewModal(){
+
+        document.getElementById("viewModal").style.display = "none";
 
     }
 
