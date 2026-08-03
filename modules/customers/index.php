@@ -184,6 +184,15 @@ $customers = $conn->query(
         <a href="completed.php">
 
             <button class="add-btn">
+                Bill Details
+            </button>
+
+        </a>
+
+
+        <a href="completed.php">
+
+            <button class="add-btn">
                 Completed Customers
             </button>
 

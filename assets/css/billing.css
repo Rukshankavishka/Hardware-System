@@ -262,3 +262,64 @@
 
     .no-print{ display:none; }
 }
+
+/* =====================================================
+   BILL ACTIONS — Complete / Not Complete / Print
+===================================================== */
+
+.bill-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:20px;
+}
+
+.billcomplete,
+.bullnot-complete,
+.bill-actions button{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:none;
+    padding:11px 22px;
+    border-radius:var(--radius-sm);
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:var(--transition);
+}
+
+.billcomplete{
+    background:var(--success);
+    color:var(--surface);
+    box-shadow:0 6px 14px rgba(22,163,74,.25);
+}
+
+.billcomplete:hover{
+    background:var(--success-dark);
+    transform:translateY(-2px);
+}
+
+.bullnot-complete{
+    background:var(--danger);
+    color:var(--surface);
+    box-shadow:0 6px 14px rgba(220,38,38,.25);
+}
+
+.bullnot-complete:hover{
+    background:var(--danger-dark);
+    transform:translateY(-2px);
+}
+
+/* Print button (no extra class, just the plain button in .bill-actions) */
+
+.bill-actions button:not(.billcomplete):not(.bullnot-complete){
+    background:var(--primary);
+    color:var(--surface);
+    box-shadow:var(--shadow-primary);
+}
+
+.bill-actions button:not(.billcomplete):not(.bullnot-complete):hover{
+    background:var(--primary-hover);
+    transform:translateY(-2px);
+}

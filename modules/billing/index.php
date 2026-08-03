@@ -287,10 +287,18 @@ $grand_total = $subtotal - $discount;
             </div>
 
             <div class="bill-actions">
-
+                        <button type="button" onclick="markComplete()" class="billcomplete no-print">
+                            ✅ Complete
+                        </button>
+ 
+                        <button type="button" onclick="markNotComplete()" class="bullnot-complete no-print">
+                            ❌ Not Complete
+                        </button>
+                        <br>
                         <button type="button" onclick="completeBill()" class="no-print">
                             🖨 Print Bill
                         </button>
+                        
             </div>
 
             <div align="center">
