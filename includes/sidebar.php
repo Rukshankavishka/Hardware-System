@@ -41,6 +41,13 @@
             </a>
         </li>
 
+        <li class="<?= ($page == 'invoices') ? 'active' : ''; ?>">
+            <a href="../../modules/invoices/index.php" >
+                <i class="fas fa-file-invoice"></i>
+                <span>Invoices</span>
+            </a>
+        </li>
+
         <li class="<?= ($page == 'customers') ? 'active' : ''; ?>">
             <a href="/hardware_system/modules/customers/index.php">
                 <i class="fa-solid fa-users"></i>

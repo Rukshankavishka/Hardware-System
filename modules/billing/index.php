@@ -287,18 +287,25 @@ $grand_total = $subtotal - $discount;
             </div>
 
             <div class="bill-actions">
-                        <button type="button" onclick="markComplete()" class="billcomplete no-print">
-                            ✅ Complete
-                        </button>
- 
-                        <button type="button" onclick="markNotComplete()" class="bullnot-complete no-print">
-                            ❌ Not Complete
-                        </button>
-                        <br>
-                        <button type="button" onclick="completeBill()" class="no-print">
-                            🖨 Print Bill
-                        </button>
-                        
+
+                    <button
+                        type="button"
+                        class="btn btn-success"
+                        onclick="saveBill('completed')">
+
+                        ✅ Complete
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-warning"
+                        onclick="saveBill('pending')">
+
+                        🟡 Not Complete
+
+                    </button>
+
             </div>
 
             <div align="center">
@@ -357,45 +364,55 @@ $grand_total = $subtotal - $discount;
                 });
 
             });
+            
+            
 
             calculateBillTotal();
 
-            function completeBill(){
+            function saveBill(status){
 
-                let paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+                let paymentMethod =
+                document.querySelector('input[name="payment_method"]:checked').value;
 
-                fetch("save_bill.php", {
-                    method: "POST",
-                    headers: {"Content-Type":"application/x-www-form-urlencoded"},
-                    body: "payment_method=" + encodeURIComponent(paymentMethod)
+                fetch("save_bill.php",{
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":"application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                    "payment_method="+encodeURIComponent(paymentMethod)+
+                    "&status="+encodeURIComponent(status)
+
                 })
-                .then(response => response.json())
-                .then(data => {
 
-                    if(data.status === "success"){
+                .then(response=>response.json())
 
-                        // 1. Print current bill (as is, with old invoice number)
-                        window.print();
+                .then(data=>{
 
-                        // 2. After print dialog closes, reset UI for the NEW invoice
-                        document.getElementById("invoiceNo").innerText = data.new_invoice_no;
+                    if(data.status=="success"){
 
-                        document.querySelector(".bill-table tbody").innerHTML = "";
-
-                        document.getElementById("grandTotal").innerText = "0.00";
-                        document.getElementById("paidAmount").value = "";
-                        document.getElementById("balance").innerText = "0.00";
-                        document.querySelector(".customer-input").value = "";
+                        window.location.href =
+                        "print_bill.php?invoice_no="+data.invoice_no;
 
                     }else{
+
                         alert(data.message);
+
                     }
 
                 })
-                .catch(err => {
-                    console.error(err);
-                    alert("Network error, please try again.");
+
+                .catch(error=>{
+
+                    console.log(error);
+
+                    alert("Something went wrong!");
+
                 });
+
             }
 
             document.getElementById("paidAmount")

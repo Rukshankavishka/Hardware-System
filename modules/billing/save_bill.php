@@ -14,6 +14,7 @@ if(!isset($_SESSION['invoice_no'])){
 }
 
 $invoice_no = $_SESSION['invoice_no'];
+$status = $_POST['status'] ?? 'completed';
 
 try{
 
@@ -35,10 +36,16 @@ try{
 
     $stmt = $pdo->prepare("
         UPDATE invoices
-        SET total_amount=:total, status='completed'
-        WHERE invoice_no=:invoice_no
+        SET total_amount = :total,
+            status = :status
+        WHERE invoice_no = :invoice_no
     ");
-    $stmt->execute([":total"=>$total, ":invoice_no"=>$invoice_no]);
+
+    $stmt->execute([
+        ":total"      => $total,
+        ":status"     => $status,
+        ":invoice_no" => $invoice_no
+    ]);
 
     $stmt = $pdo->prepare("
         INSERT INTO transactions
@@ -67,11 +74,29 @@ try{
 
     foreach($items as $row){
 
+        // completed / pending logic
+        if($status == "completed"){
+
+            $taken_quantity = $row['quantity'];
+            $remaining_quantity = 0;
+
+        }else{
+
+            $taken_quantity = 0;
+            $remaining_quantity = $row['quantity'];
+
+        }
+
         // 1) Reduce stock
         $update = $pdo->prepare("
-            UPDATE products SET stock_qty = stock_qty - :qty WHERE product_id = :product_id
+            UPDATE products
+            SET stock_qty = stock_qty - :qty
+            WHERE product_id = :product_id
         ");
-        $update->execute([":qty"=>$row['quantity'], ":product_id"=>$row['product_id']]);
+        $update->execute([
+            ":qty"=>$row['quantity'],
+            ":product_id"=>$row['product_id']
+        ]);
 
         // 2) Buying Price එක products table එකෙන් ගන්න
         $buy = $pdo->prepare("
@@ -79,7 +104,10 @@ try{
             FROM products
             WHERE product_id = :product_id
         ");
-        $buy->execute([":product_id"=>$row['product_id']]);
+        $buy->execute([
+            ":product_id"=>$row['product_id']
+        ]);
+
         $product = $buy->fetch(PDO::FETCH_ASSOC);
         $buying_price = $product['buying_price'];
 
@@ -93,6 +121,8 @@ try{
                 product_id,
                 product_name,
                 quantity,
+                taken_quantity,
+                remaining_quantity,
                 buying_price,
                 selling_price,
                 line_total,
@@ -104,21 +134,26 @@ try{
                 :product_id,
                 :product_name,
                 :quantity,
+                :taken_quantity,
+                :remaining_quantity,
                 :buying_price,
                 :selling_price,
                 :line_total,
                 :profit
             )
         ");
+
         $save->execute([
-            ":invoice_no"    => $invoice_no,
-            ":product_id"    => $row['product_id'],
-            ":product_name"  => $row['product_name'],
-            ":quantity"      => $row['quantity'],
-            ":buying_price"  => $buying_price,
-            ":selling_price" => $row['selling_price'],
-            ":line_total"    => $row['total'],
-            ":profit"        => $profit
+            ":invoice_no"         => $invoice_no,
+            ":product_id"         => $row['product_id'],
+            ":product_name"       => $row['product_name'],
+            ":quantity"           => $row['quantity'],
+            ":taken_quantity"     => $taken_quantity,
+            ":remaining_quantity" => $remaining_quantity,
+            ":buying_price"       => $buying_price,
+            ":selling_price"      => $row['selling_price'],
+            ":line_total"         => $row['total'],
+            ":profit"             => $profit
         ]);
     }
 
@@ -144,8 +179,9 @@ try{
     $_SESSION['invoice_no'] = $new_invoice_no;
 
     echo json_encode([
-        "status"=>"success",
-        "new_invoice_no"=>$new_invoice_no
+        "status"        => "success",
+        "invoice_no"    => $invoice_no,
+        "new_invoice_no"=> $new_invoice_no
     ]);
     exit();
 
